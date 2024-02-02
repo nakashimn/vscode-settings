@@ -1,0 +1,99 @@
+{
+    // files
+    "files.encoding": "utf8",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+
+    // markdown
+    "markdown.copyFiles.destination": {
+        "*": "imgs/${documentBaseName}/"
+    },
+    "markdown.marp.enableHtml": true,
+    "markdown.marp.themes": [
+        "./プレゼンテーション/sample.css"
+    ],
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false,
+        "editor.fontFamily": "BIZ UDゴシック",
+        "editor.quickSuggestions": {
+            "other": "on",
+            "comments": "off",
+            "strings": "off"
+        },
+        "editor.snippetSuggestions": "top",
+    },
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.sideBar.location": "left",
+    "workbench.statusBar.visible": true,
+
+    // terminal
+    "terminal.integrated.profiles.windows": {
+        "PowerShell -NoProfile": {
+          "source": "PowerShell",
+          "args": ["-NoProfile"]
+        }
+    },
+
+    // git
+    "git.suggestSmartCommit": false,
+    "gitlens.advanced.messages": {
+        "suppressFileNotUnderSourceControlWarning": true,
+        "suppressGitMissingWarning": true
+    },
+
+    // editor
+    "editor.acceptSuggestionOnEnter": "off",
+    "editor.fontFamily": "Consolas, 'Courier New', monospace",
+    "editor.largeFileOptimizations": false,
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [80, 88],
+
+    // jupyter
+    "jupyter.askForKernelRestart": false,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
+
+    // settigngsSync
+    "settingsSync.ignoredSettings": [
+        "launch",
+        "cloudcode.gke"
+    ],
+
+    // window
+    "window.newWindowDimensions": "inherit",
+    "window.restoreWindows": "one",
+
+    // remote
+    "remote.SSH.remotePlatform": {
+    },
+
+    // etc
+    "breadcrumbs.enabled": true,
+    "C_Cpp.updateChannel": "Insiders",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "terminal.integrated.inheritEnv": false,
+    "extensions.ignoreRecommendations": true,
+    "vsicons.dontShowNewVersionMessage": true,
+    "interactiveWindow.alwaysScrollOnNewCell": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "dev.containers.executeInWSL": true,
+    "editor.autoClosingQuotes": "never",
+    "workbench.activityBar.location": "hidden",
+    "workbench.editor.empty.hint": "hidden",
+}
