@@ -1,0 +1,99 @@
+{
+	// base image
+	"ubuntu22": {
+		"prefix": "ubuntu22.04",
+		"body": [
+			"FROM ubuntu:22.04",
+			"",
+			"RUN apt-get update \\",
+			"\t&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \\",
+			"\tgit \\",
+			"\ttzdata \\",
+			"\t&& apt-get clean \\",
+			"\t&& rm -rf /var/lib/apt/lists/*",
+			"",
+			"RUN git config --global --add safe.directory /workspace"
+		]
+	},
+	"nvidia-cuda": {
+		"prefix": "nvidia-cuda",
+		"body": [
+			"FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04",
+			"",
+			"WORKDIR /workspace",
+			"",
+			"RUN apt-get update \\",
+			"\t&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \\",
+			"\tgit \\",
+			"\ttzdata \\",
+			"\t&& apt-get clean \\",
+			"\t&& rm -rf /var/lib/apt/lists/*",
+			"",
+			"RUN git config --global --add safe.directory /workspace"
+		]
+	},
+	"python": {
+		"prefix": "python3.12",
+		"body": [
+			"FROM python:3.12",
+			"",
+			"ADD requirements.txt /",
+			"RUN pip install --no-cache-dir -r requirements.txt"
+		]
+	},
+
+	// Install Libraires
+	"install python": {
+		"prefix": "install python",
+		"body": [
+			"COPY requirements.txt /tmp/",
+			"RUN pip install --no-cache-dir -r /tmp/requirements.txt \\",
+			"\t&& rm /tmp/requirements.txt"
+		]
+	},
+	"install python(pytorch/cpu)": {
+		"prefix": "install python(pytorch/cpu)",
+		"body": [
+			"RUN apt-get update \\",
+			"\t&& apt-get install -y build-essential git python python3-pip",
+			"",
+			"COPY requirements.txt /tmp/",
+			"RUN pip install --no-cache-dir -r /tmp/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html \\",
+			"\t&& rm /tmp/requirements.txt"
+		]
+	},
+	"install python(pytorch)": {
+		"prefix": "install python(pytorch)",
+		"body": [
+			"RUN apt-get update \\",
+			"\t&& apt-get install -y build-essential git python python3-pip",
+			"",
+			"COPY requirements.txt /tmp/",
+			"RUN pip install --no-cache-dir -r /tmp/requirements.txt \\",
+			"\t&& rm /tmp/requirements.txt"
+		]
+	},
+	"install cmake": {
+		"prefix": "install cmake",
+		"body": [
+			"RUN apt-get update \\",
+			"\t&& apt-get upgrade -y \\",
+			"\t&& apt-get install -y build-essential git libssl-dev",
+			"RUN git clone https://github.com/Kitware/CMake.git \\",
+			"\t&& cd CMake \\",
+			"\t&& ./bootstrap \\",
+			"\t&& make -j8\\",
+			"\t&& make install"
+		]
+	},
+	"install nlohmann-json": {
+		"prefix": "install nlohmann-json",
+		"body": [
+			"RUN git clone https://github.com/nlohmann/json.git \\",
+			"&& cd json \\",
+			"&& cmake . \\",
+			"&& make -j8 \\",
+			"&& make install"
+		]
+	}
+}

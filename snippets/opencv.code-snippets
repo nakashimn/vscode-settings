@@ -1,0 +1,51 @@
+{
+	"cv2.imread": {
+		"scope": "python",
+		"prefix": ["cv2.imread", "cv2_imread", "imread"],
+		"body": [
+			"cv2.imread(${TM_SELECTED_TEXT}$0)"
+		]
+	},
+	"cv2.cvtColor(BGRtoRGB)": {
+		"scope": "python",
+		"prefix": ["cv2.cvtColor(BGRtoRGB)", "cv2_cvtColor(BGRtoRGB)"],
+		"body": [
+			"cv2.cvtColor($0, cv2.COLOR_BGR2RGB)"
+		]
+	},
+	"cv2.rectangle": {
+		"scope": "python",
+		"prefix": ["cv2.rectangle", "cv2_rectangle"],
+		"body": [
+			"cv2.rectangle(img, ${1:start}, ${2:end}, color=${3:color}, thickness=1)"
+		]
+	},
+	"cv2.putText": {
+		"scope": "python",
+		"prefix": ["cv2.putText", "cv2_putText", "cv2.text", "cv2_text"],
+		"body": [
+			"cv2.putText(img, ${1:text}, ${2:org}, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=${3:color}, thickness=1)"
+		]
+	},
+	"shlink_image": {
+		"scope": "python",
+		"prefix": "def shlink_img",
+		"body": [
+			"def shlink_img(img, size=[640, 480]):",
+			"\theight, width = img.shape[:2]",
+			"\tratio = np.min([size[1] / height, size[0] / width])",
+			"\tif ratio >= 1.0:",
+			"\t\treturn img",
+			"\treturn cv2.resize(img, dsize=None, fx=ratio, fy=ratio)",
+		]
+	},
+	"mask_image": {
+		"scope": "python",
+		"prefix": "def mask_img",
+		"body": [
+			"def mask_img(img, threshold):",
+			"\tmask = (img<threshold).astype(np.uint8)",
+			"\treturn cv2.bitwise_and(img, img, mask=mask)",
+		]
+	}
+}

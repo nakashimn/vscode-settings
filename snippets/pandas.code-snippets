@@ -1,0 +1,73 @@
+{
+	"pd.concat": {
+		"scope": "python",
+		"prefix": ["pd.concat", "pd_concat"],
+		"body": [
+			"pd.concat([$0, ], axis=0, ignore_index=True)"
+		]
+	},
+	"pd.read_csv": {
+		"scope": "python",
+		"prefix": ["pd.read_csv", "pd_read_csv"],
+		"body": [
+			"pd.read_csv($0)"
+		]
+	},
+	"pd.get_dummies": {
+		"scope": "python",
+		"prefix": ["pd.get_dummies_", "pd_get_dummies"],
+		"body": [
+			"pd.get_dummies($0)"
+		]
+	},
+	"pd.crosstab": {
+		"scope": "python",
+		"prefix": ["pd.crosstab_", "pd_crosstab"],
+		"body": [
+			"pd.crosstab($0, )"
+		]
+	},
+	"df_table": {
+		"scope": "python",
+		"prefix": "df_table",
+		"body": [
+			"df_table = pd.read_csv($0)"
+		]
+	},
+	"for idx": {
+		"scope": "python",
+		"prefix": ["foridx", "for_idx"],
+		"body": [
+			"for idx in tqdm(${TM_SELECTED_TEXT}$0.index):",
+			"\tbreak"
+		]
+	},
+	".reset_index": {
+		"scope": "python",
+		"prefix": ".reset_index",
+		"body": [
+			"${TM_SELECTED_TEXT}$0.reset_index(drop=True)"
+		]
+	},
+	".merge": {
+		"scope": "python",
+		"prefix": ".merge",
+		"body": [
+			".merge($0, on=$2, how=${1|\"inner\",\"outer\",\"left\",\"right\"|})"
+		]
+	},
+	"pd.DataFrame": {
+		"scope": "python",
+		"prefix": ["pd.DataFrame", "pd_DataFrame"],
+		"body": [
+			"pd.DataFrame($0)"
+		]
+	},
+	"df_max_each_group": {
+		"scope": "python",
+		"prefix": "df_max_each_group",
+		"body": [
+			"df_max_each_group = df.loc[df.groupby(\"${1:group}\")[\"${2:col}\"].idxmax()].reset_index(drop=True)"
+		]
+	}
+}
