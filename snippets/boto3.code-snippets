@@ -5,7 +5,7 @@
 		"body": [
 			"class AwsS3Client:",
 			"\tdef __init__(self, profile_name: str = \"default\") -> None:",
-			"\t\tself.session: Session = Session(profilename=profile_name)",
+			"\t\tself.session: Session = Session(profile_name=profile_name)",
 			"\t\tself.s3_client: S3Client = self.session.client(\"s3\")",
 			"",
 			"\tdef list_buckets(self) -> dict[str, Any]:",
