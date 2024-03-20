@@ -20,7 +20,7 @@
 			"Base: DeclarativeMeta = declarative_base()",
 			"class ORMapper(Base):",
 			"\t__tablename__ = $0",
-			"\tid: Mapped[int] = Column(Integer, primary_key=True, unique=True)",
+			"\tid: Mapped[int] = Column(Integer, primary_key=True, unique=True, autoincrement=True)",
 			"\tname: Mapped[str] = Column(String, nullable=False)",
 			"\tcreated_at: Mapped[datetime.date] = Column(Date)"
 		]
@@ -58,13 +58,13 @@
 		"scope": "python",
 		"prefix": "db_url(MySQL)",
 		"body": [
-			"rds_host: str = os.getenv(\"RDS_HOST\")",
-			"rds_user: str = os.getenv(\"RDS_USER\")",
-			"rds_password: str = os.getenv(\"RDS_PASSWORD\")",
-			"rds_port: int = os.getenv(\"RDS_PORT\")",
+			"db_host: str = os.getenv(\"DB_HOST\")",
+			"db_password: str = os.getenv(\"DB_PASSWORD\")",
+			"db_port: int = os.getenv(\"DB_PORT\")",
+			"db_username: str = os.getenv(\"DB_USERNAME\")",
 			"db_name: str = \"db_name\"",
 			"",
-			"db_url: str = f\"mysql+pymysql://{rds_user}:{rds_password}@{rds_host}:{rds_port}/{db_name}?charset=utf8mb4\""
+			"db_url: str = f\"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?charset=utf8mb4\""
 		]
 	},
 	"SqlInterface": {
@@ -72,16 +72,23 @@
 		"prefix": "SqlInterface",
 		"body": [
 			"class SqlInterface:",
-			"\tdef __init__(self, ORMapper: DeclarativeMeta, logger: Logger | None = None) -> None:",
+			"\tdef __init__(self, ORMapper: DeclarativeMeta, db_url: str, logger: Logger | None = None) -> None:",
 			"\t\t# logger",
 			"\t\tself.logger: Logger = logger or null_logger",
 			"\t\t# const",
-			"\t\tself.db_url: str = \"<>:///<path>\"",
+			"\t\tself.db_url: str = db_url",
 			"\t\tself.ORMapper: DeclarativeMeta = ORMapper",
 			"\t\tself.SqlEngine: Engine = sqlalchemy.create_engine(self.db_url)",
 			"\t\tself.session: Session = sessionmaker(self.SqlEngine)()",
 			"",
-			"\tdef read(self, colname: str = "", filter_vals: list[str] = []) -> pd.DataFrame:",
+			"\t\tself.check_database_exist()",
+			"",
+			"\tdef check_database_exist(self) -> None:",
+			"\t\tif not database_exists(self.SqlEngine):",
+			"\t\t\traise",
+			"\t\treturn",
+			"",
+			"\tdef read(self, colname: str = \"\", filter_vals: list[str] = []) -> pd.DataFrame:",
 			"\t\tquery: str = self.create_query(",
 			"\t\t\tself.ORMapper.__tablename__, colname, filter_vals)",
 			"\t\tdf: pd.DataFrame = pd.read_sql(sql=query, con=self.SqlEngine)",
@@ -90,7 +97,7 @@
 			"\t@staticmethod",
 			"\tdef create_query(",
 			"\t\ttablename: str,",
-			"\t\tcolname: str = "",",
+			"\t\tcolname: str = \"\",",
 			"\t\tfilter_vals: list[str] = []",
 			"\t) -> str:",
 			"\t\tquery: str = f\"select * from {tablename}\"",
