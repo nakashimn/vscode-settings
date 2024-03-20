@@ -1,10 +1,49 @@
 {
+    // breadcrumbs
+    "breadcrumbs.enabled": true,
+    "breadcrumbs.filePath": "off",
+
+    // dev containers
+    "dev.containers.executeInWSL": true,
+    "dev.containers.defaultExtensions": [
+        " ryuta46.multi-command"
+    ],
+
+    // editor
+    "editor.acceptSuggestionOnEnter": "off",
+    "editor.autoClosingQuotes": "never",
+    "editor.fontFamily": "Consolas, 'Courier New', monospace",
+    "editor.glyphMargin": false,
+    "editor.largeFileOptimizations": false,
+    "editor.minimap.autohide": true,
+    "editor.minimap.maxColumn": 40,
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.size": "fit",
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [80, 88],
+
     // files
     "files.encoding": "utf8",
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
+
+    // git
+    "git.autoRepositoryDetection": "openEditors",
+    "git.suggestSmartCommit": false,
+    "gitlens.advanced.messages": {
+        "suppressFileNotUnderSourceControlWarning": true,
+        "suppressGitMissingWarning": true
+    },
+
+    // jupyter
+    "jupyter.askForKernelRestart": false,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
 
     // markdown
     "markdown.copyFiles.destination": {
@@ -14,6 +53,44 @@
     "markdown.marp.themes": [
         "./プレゼンテーション/sample.css"
     ],
+
+    // remote
+    "remote.SSH.remotePlatform": {
+    },
+
+    // terminal
+    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.profiles.windows": {
+        "PowerShell -NoProfile": {
+          "source": "PowerShell",
+          "args": ["-NoProfile"]
+        }
+    },
+
+    // window
+    "window.density.editorTabHeight": "compact",
+    "window.menuBarVisibility": "toggle",
+    "window.newWindowDimensions": "inherit",
+    "window.restoreWindows": "one",
+
+    // workbench
+    "workbench.activityBar.location": "hidden",
+    "workbench.editor.empty.hint": "hidden",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "workbench.sideBar.location": "left",
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.statusBar.visible": true,
+    "workbench.tree.renderIndentGuides": "always",
+
+    // for each file format //
+    // liquid
+    "[liquid]": {
+        "files.insertFinalNewline": false
+    },
+
+    // markdown
     "[markdown]": {
         "files.trimTrailingWhitespace": false,
         "editor.fontFamily": "BIZ UDゴシック",
@@ -24,76 +101,26 @@
         },
         "editor.snippetSuggestions": "top",
     },
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
-    },
-    "workbench.startupEditor": "newUntitledFile",
-    "workbench.sideBar.location": "left",
-    "workbench.statusBar.visible": true,
 
-    // terminal
-    "terminal.integrated.profiles.windows": {
-        "PowerShell -NoProfile": {
-          "source": "PowerShell",
-          "args": ["-NoProfile"]
-        }
+    // python
+    "[python]": {
+        "editor.formatOnType": true
     },
 
-    // git
-    "git.suggestSmartCommit": false,
-    "gitlens.advanced.messages": {
-        "suppressFileNotUnderSourceControlWarning": true,
-        "suppressGitMissingWarning": true
+    // sql
+    "[sql]": {
+        "editor.defaultFormatter": "henriblancke.vscode-dbtpformatter"
     },
 
-    // editor
-    "editor.acceptSuggestionOnEnter": "off",
-    "editor.fontFamily": "Consolas, 'Courier New', monospace",
-    "editor.largeFileOptimizations": false,
-    "editor.renderWhitespace": "all",
-    "editor.rulers": [80, 88],
-
-    // jupyter
-    "jupyter.askForKernelRestart": false,
-    "jupyter.interactiveWindow.textEditor.executeSelection": true,
-    "jupyter.widgetScriptSources": [
-        "jsdelivr.com",
-        "unpkg.com"
-    ],
-
-    // settigngsSync
-    "settingsSync.ignoredSettings": [
-        "launch",
-        "cloudcode.gke"
-    ],
-
-    // window
-    "window.newWindowDimensions": "inherit",
-    "window.restoreWindows": "one",
-
-    // remote
-    "remote.SSH.remotePlatform": {
-    },
-
-    // etc
-    "breadcrumbs.enabled": true,
-    "C_Cpp.updateChannel": "Insiders",
+    // etc //
     "liveServer.settings.donotShowInfoMsg": true,
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
     },
-    "terminal.integrated.inheritEnv": false,
     "extensions.ignoreRecommendations": true,
-    "vsicons.dontShowNewVersionMessage": true,
     "interactiveWindow.alwaysScrollOnNewCell": true,
     "diffEditor.ignoreTrimWhitespace": false,
     "security.workspace.trust.untrustedFiles": "open",
-    "[python]": {
-        "editor.formatOnType": true
-    },
-    "dev.containers.executeInWSL": true,
-    "editor.autoClosingQuotes": "never",
-    "workbench.activityBar.location": "hidden",
-    "workbench.editor.empty.hint": "hidden",
+    "vsicons.dontShowNewVersionMessage": true,
 }
