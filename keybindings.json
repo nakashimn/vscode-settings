@@ -285,7 +285,7 @@
     },
     {
         "key": "ctrl+h ctrl+h",
-        "command": "workbench.action.debug.continue",
+        "command": "workbench.action.debug.stepInto",
         "when": "inDebugMode && editorLangId == 'php'"
     },
 
