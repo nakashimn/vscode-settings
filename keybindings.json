@@ -273,6 +273,11 @@
     // typescript
     {
         "key": "ctrl+h ctrl+h",
+        "command": "code-runner.run",
+        "when": "editorLangId == 'typescript'"
+    },
+    {
+        "key": "ctrl+h ctrl+shift+h",
         "command": "quokka.makeQuokkaFromExistingFile",
         "when": "editorLangId == 'typescript'"
     },
