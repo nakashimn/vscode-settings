@@ -6,7 +6,9 @@
     // dev containers
     "dev.containers.executeInWSL": true,
     "dev.containers.defaultExtensions": [
-        " ryuta46.multi-command"
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        "ryuta46.multi-command"
     ],
 
     // editor
