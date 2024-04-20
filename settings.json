@@ -25,6 +25,9 @@
     "editor.rulers": [80, 88],
 
     // files
+    "files.associations": {
+        "*.gs": "javascript"
+    },
     "files.encoding": "utf8",
     "files.eol": "\n",
     "files.insertFinalNewline": true,
@@ -55,6 +58,10 @@
     "markdown.marp.themes": [
         "./プレゼンテーション/sample.css"
     ],
+
+    // plantuml
+    "plantuml.exportOutDir": "./fig/",
+    "plantuml.exportSubFolder": false,
 
     // remote
     "remote.SSH.remotePlatform": {
