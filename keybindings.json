@@ -102,7 +102,18 @@
     },
     {
         "key": "ctrl+shift+m",
-        "command": "markdown-preview-enhanced.openPreviewToTheSide"
+        "command": "markdown-preview-enhanced.openPreviewToTheSide",
+        "when": "editorLangId == 'markdown'"
+    },
+    {
+        "key": "ctrl+shift+m m",
+        "command": "plantuml.preview",
+        "when": "editorLangId == 'plantuml'"
+    },
+    {
+        "key": "ctrl+shift+m o",
+        "command": "plantuml.exportCurrent",
+        "when": "editorLangId == 'plantuml'"
     },
     {
         "key": "ctrl+shift+i",

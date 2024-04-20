@@ -10,7 +10,7 @@
 			"",
 			"$1",
 			"",
-			"@enduml",
+			"@enduml"
 		]
 	},
 
@@ -36,6 +36,22 @@
 			"",
 			"@enduml",
 			""
+		]
+	},
+
+	// AWS
+	"aws": {
+		"prefix": "aws",
+		"body": [
+			"```plantuml",
+			"@startuml",
+			"!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v14.0/dist",
+			"!include AWSPuml/AWSCommon.puml",
+			"!include AWSPuml/Storage/all.puml",
+			"",
+			"skinparam linetype ortho",
+			"@enduml",
+			"```"
 		]
 	}
 }
