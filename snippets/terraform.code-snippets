@@ -1,0 +1,501 @@
+{
+    // BaseSettings
+    "default_setting": {
+        "scope": "terraform",
+        "prefix": "default_setting",
+        "body": [
+            "terraform {",
+            "\tbackend \"s3\" {",
+            "\t\tbucket  = \"<bucketname>\"",
+            "\t\tregion  = \"<region>\"",
+            "\t\tkey     = \"tfstate/production.tfstate\"",
+            "\t\tencrypt = true",
+            "\t}",
+            "}",
+            "",
+            "provider \"aws\" {",
+            "  region  = <region>",
+            "  profile = \"terraform\"",
+            "}",
+            "",
+            "# AWSの情報",
+            "data \"aws_caller_identity\" \"current\" {}",
+            "data \"aws_availability_zones\" \"available\" {}"
+        ]
+    },
+
+    // Module
+    "module": {
+        "scope": "terraform",
+        "prefix": "module",
+        "body": [
+            "module \"${1:module_name}\" {",
+            "\tsource     = \"./modules/${1:module_name}\"",
+            "\taccount_id = data.aws_caller_identity.current.account_id",
+            "}"
+        ]
+    },
+
+    // IAMRole
+    "ResourceRole": {
+        "scope": "terraform",
+        "prefix": "resource_role",
+        "body": [
+            "resource \"aws_iam_role\" \"${1:sample}\" {",
+            "\tname = \"${1:sample}\"",
+            "\tassume_role_policy = templatefile(",
+            "\t\t${path.module}/assets/templates/assume_role_policy.tpl",
+            "\t\t{principal = \"ecs-tasks.amazonaws.com\"}",
+            "\t)",
+            "\tmanaged_policy_arns = []",
+            "}"
+        ]
+    },
+
+    // IAMPolicy
+    "AssumeRolePolicy": {
+        "scope": "terraform",
+        "prefix": "assume_role_policy",
+        "body": [
+            "{",
+            "\t\"Version\": \"2012-10-17\"",
+            "\t\"Statement\": [",
+            "\t\t{",
+            "\t\t\t\"Action\": \"sts:AssumeRole\"",
+            "\t\t\t\"Principal\": {",
+            "\t\t\t\t\"Service\": \"${principal}\"",
+            "\t\t\t}",
+            "\t\t\t\"Effect\": \"Allow\"",
+            "\t\t}",
+            "\t]",
+            "}"
+        ]
+    },
+    "PolicyTemplate": {
+        "scope": "terraform",
+        "prefix": "policy_template",
+        "body": [
+            "resource \"aws_iam_policy\" \"${1:sample}\" {",
+            "\tname = \"${1:sample}\"",
+            "\tpolicy = jsonencode(",
+            "\t\t{",
+            "\t\t\t\"Version\" = \"2012-10-17\",",
+            "\t\t\t\"Statement\" = [",
+            "\t\t\t\t{",
+            "\t\t\t\t\tEffect   = \"Allow\"",
+            "\t\t\t\t\tAction   = \"<Action>\"",
+            "\t\t\t\t\tResource = \"*\"",
+            "\t\t\t\t}",
+            "\t\t\t]",
+            "\t\t}",
+            "\t)",
+            "}"
+        ]
+    },
+
+    // VPC
+    "VPC": {
+        "scope": "terraform",
+        "prefix": "vpc",
+        "body": [
+            "resource \"aws_vpc\" \"main\" {",
+            "\tcidr_block = var.cidr_block",
+            "}"
+        ]
+    },
+
+    // Subnet
+    "PublicSubnet": {
+        "scope": "terraform",
+        "prefix": "subnet(public)",
+        "body": [
+            "# PublicSubnet定義",
+            "resource \"aws_subnet\" \"public\" {",
+            "\tcount  = length(local.availability_zones)",
+            "\tvpc_id = aws_vpc.main.id",
+            "\tcidr_block = cidrsubnet(",
+            "\t\taws_vpc.main.cidr_block,",
+            "\t\t2 * length(local.availability_zones),",
+            "\t\tcount.index",
+            "\t)",
+            "\tavailability_zone       = local.availability_zones[count.index].name",
+            "\tmap_public_ip_on_launch = true",
+            "\ttags = {",
+            "\t\tName = \"subnet-public-${local.availability_zones[count.index].zone_id}\"",
+            "\t}",
+            "}",
+            "",
+            "# PublicRoutingTable定義",
+            "resource \"aws_route_table\" \"public\" {",
+            "\tcount = length(aws_subnet.public)",
+            "\tvpc_id = aws_vpc.main.id",
+            "",
+            "\t# InternetGatewayと紐づけ",
+            "\troute {",
+            "\t\tcidr_block = \"0.0.0.0/0\"",
+            "\t\tgateway_id = aws_internet_gateway.main.id",
+            "\t}",
+            "",
+            "\ttags = {",
+            "\t\tName = \"route-table-public-${count.index}\"",
+            "\t}",
+            "}",
+            "",
+            "# PublicRoutingTableとPublicSubnetの紐づけ",
+            "resource \"aws_route_table_association\" \"public\" {",
+            "\tcount          = length(local.availability_zones)",
+            "\tsubnet_id      = aws_subnet.public[count.index].id",
+            "\troute_table_id = aws_route_table.public[count.index].id",
+            "}"
+        ]
+    },
+    "PrivateSubnet": {
+        "scope": "terraform",
+        "prefix": "subnet(private)",
+        "body": [
+            "# PrivateSubnet定義",
+            "resource \"aws_subnet\" \"private\" {",
+            "\tcount = length(local.availability_zones)",
+            "\tvpc_id = aws_vpc.main.id",
+            "\tcidr_block = cidrsubnet(",
+            "\t\taws_vpc.main.cidr_block,",
+            "\t\t2 * length(local.availability_zones),",
+            "\t\tcount.index + length(local.availability_zones)",
+            "\t)",
+            "\tavailability_zone       = local.availability_zones[count.index].name",
+            "\tmap_public_ip_on_launch = false",
+            "\ttags = {",
+            "\t\tName = \"subnet-private-${local.availability_zones[count.index].zone_id}\"",
+            "\t}",
+            "}",
+            "",
+            "# PrivateRoutingTable定義",
+            "resource \"aws_route_table\" \"private\" {",
+            "\tcount = length(aws_subnet.private)",
+            "\tvpc_id = aws_vpc.main.id",
+            "",
+            "\t# NATGatewayと紐づけ",
+            "\troute {",
+            "\t\tcidr_block = \"0.0.0.0/0\"",
+            "\t\tnat_gateway_id = aws_nat_gateway.main[count.index].id",
+            "\t}",
+            "",
+            "\ttags = {",
+            "\t\tName = \"route-table-private-${count.index}\"",
+            "\t}",
+            "}",
+            "",
+            "# PrivateRoutingTableとPrivateSubnetの紐づけ",
+            "resource \"aws_route_table_association\" \"private\" {",
+            "\tcount          = length(aws_subnet.private)",
+            "\tsubnet_id      = aws_subnet.private[count.index].id",
+            "\troute_table_id = aws_route_table.private[count.index].id",
+            "}"
+        ]
+    },
+
+    // SecurityGroup
+    "SecurityGroup": {
+        "scope": "terraform",
+        "prefix": "security_group",
+        "body": [
+            "resource \"aws_security_group\" \"${1:sample}\" {",
+            "\tname   = \"${1:sample}\"",
+            "\tvpc_id = var.vpc_id",
+            "}",
+            "",
+            "resource \"aws_security_group_rule\" \"${1:sample}\" {",
+            "\tsecurity_group_id = aws_security_group.main.id",
+            "\ttype              = \"${2|ingress,egress|}\"",
+            "\tfrom_port         = ${3:<port>}",
+            "\tto_port           = ${3:<port>}",
+            "\tprotocol          = \"${4|-1,tcp,http,https|}\"",
+            "\tcidr_blocks       = [\"0.0.0.0/0\"]",
+            "}"
+        ]
+    },
+
+    // InternetGateway
+    "InternetGateway": {
+        "scope": "terraform",
+        "prefix": "internet_gateway",
+        "body": [
+            "resource \"aws_internet_gateway\" \"main\" {",
+            "\tvpc_id = aws_vpc.main.id",
+            "}"
+        ]
+    },
+
+    // NATGateway
+    "NATGateway": {
+        "scope": "terraform",
+        "prefix": "nat_gateway",
+        "body": [
+            "resource \"aws_nat_gateway\" \"main\" {",
+            "\tcount         = length(aws_subnet.public)",
+            "\tallocation_id = aws_eip.nat_gateway[count.index].id",
+            "\tsubnet_id     = aws_subnet.public[count.index].id",
+            "",
+            "\ttags = {",
+            "\t\tName = \"nat-gateway-${count.index}\"",
+            "\t}",
+            "}",
+            "",
+            "resource \"aws_eip\" \"nat_gateway\" {",
+            "\tcount = length(aws_subnet.public)",
+            "",
+            "\ttags = {",
+            "\t\tName = \"elastic-ip-${count.index}\"",
+            "\t}",
+            "}"
+        ]
+    },
+
+    // Bucket
+    "Bucket": {
+        "scope": "terraform",
+        "prefix": "bucket",
+        "body": [
+            "resource \"aws_s3_bucket\" \"${1:sample}\" {",
+            "\tbucket = \"${1:sample}\"",
+            "}"
+        ]
+    },
+
+    // LogGroup
+    "LogGroup": {
+        "scope": "terraform",
+        "prefix": "log_group",
+        "body": [
+            "resource \"aws_cloudwatch_log_group\" \"${1:sample}\" {",
+            "\tname              = ${1:sample}",
+            "\tretention_in_days = 30",
+            "}"
+        ]
+    },
+
+    // ECR
+    "ECR": {
+        "scope": "terraform",
+        "prefix": "ecr",
+        "body": [
+            "resource \"aws_ecr_repository\" \"${1:sample}\" {",
+            "\tname                 = ${1:sample}",
+            "\timage_tag_mutability = \"MUTABLE\"",
+            "\timage_scanning_configuration {",
+            "\t\tscan_on_push = true",
+            "\t}",
+            "}",
+        ]
+    },
+
+    // ECS Batch
+    "ECSBatch": {
+        "scope": "terraform",
+        "prefix": "ecs_batch",
+        "body": [
+            "resource \"aws_cloudwatch_event_rule\" \"${1:sample}\" {",
+            "\t\tname                = \"${1:sample}\"",
+            "\t\tschedule_expression = \"cron(0 15 * * ? *)\" # UTC",
+            "\t}",
+            "",
+            "resource \"aws_cloudwatch_event_target\" \"${1:sample}\" {",
+            "\trule     = aws_cloudwatch_event_rule.${1:sample}.name",
+            "\tarn      = aws_ecs_cluster.${1:sample}.arn",
+            "\trole_arn = var.eventbridge_scheduler_role.arn",
+            "\tecs_target {",
+            "\t\ttask_definition_arn = aws_ecs_task_definition.${1:sample}.arn",
+            "\t\tnetwork_configuration {",
+            "\t\t\tassign_public_ip = false",
+            "\t\t\tsubnets          = var.subnet_ids",
+            "\t\tsecurity_groups  = [aws_security_group.${1:sample}.id]",
+            "\t\t}",
+            "\t}",
+            "}"
+        ]
+    },
+
+    // ECS Service
+    "ECSService": {
+        "scope": "terraform",
+        "prefix": "ecs_service",
+        "body": [
+            "resource \"aws_ecs_service\" \"${1:sample}\" {",
+            "\tname            = \"${1:sample}\"",
+            "\tcluster         = aws_ecs_cluster.${1:sample}.id",
+            "\ttask_definition = aws_ecs_task_definition.${1:sample}.arn",
+            "\tdesired_count   = 1",
+            "\tlaunch_type     = \"FARGATE\"",
+            "\tnetwork_configuration {",
+            "\t\tsubnets          = var.subnet_ids",
+            "\t\tsecurity_groups  = [aws_security_group.${1:sample}.id]",
+            "\t\tassign_public_ip = true",
+            "\t}",
+            "\tload_balancer {",
+            "\t\ttarget_group_arn = aws_lb_target_group.${1:sample}.arn",
+            "\t\tcontainer_name   = \"${2:container_name}\"",
+            "\t\tcontainer_port   = ${3:<port>}",
+            "\t}",
+            "}",
+        ]
+    },
+
+    // ECS TaskDefinition
+    "ECSTaskdefinition": {
+        "scope": "terraform",
+        "prefix": "ecs_taskdefinition",
+        "body": [
+            "resource \"aws_ecs_cluster\" \"${1:sample}\" {",
+            "\tname = \"${1:sample}\"",
+            "}",
+            "",
+            "resource \"aws_ecs_task_definition\" \"${1:sample}\" {",
+            "\tfamily                   = \"${1:sample}\"",
+            "\trequires_compatibilities = [\"FARGATE\"]",
+            "\tnetwork_mode             = \"awsvpc\"",
+            "\tcpu                      = 512",
+            "\tmemory                   = 1024",
+            "\texecution_role_arn       = var.ecs_task_execution_role.arn",
+            "\ttask_role_arn            = var.ecs_task_role.arn",
+            "\tcontainer_definitions = jsonencode(",
+            "\t\t[",
+            "\t\t\t{",
+            "\t\t\t\tname      = \"${2:container_name}\"",
+            "\t\t\t\timage     = \"${aws_ecr_repository.${1:sample}.repository_url}:latest\"",
+            "\t\t\t\tcpu       = 512",
+            "\t\t\t\tmemory    = 1024",
+            "\t\t\t\tessential = true",
+            "\t\t\t\tenvironment = [",
+            "\t\t\t\t{ name = \"PORT\", value = tostring(${3:<port>}) }",
+            "\t\t\t\t]",
+            "\t\t\t\tportMappings = [",
+            "\t\t\t\t{",
+            "\t\t\t\t\tcontainerPort = ${3:<port>}",
+            "\t\t\t\t\thostPort      = ${3:<port>}",
+            "\t\t\t\t}",
+            "\t\t\t\t]",
+            "\t\t\t\tlogConfiguration = {",
+            "\t\t\t\tlogDriver = \"awslogs\",",
+            "\t\t\t\toptions = {",
+            "\t\t\t\t\tawslogs-region        = ${4:<region>}",
+            "\t\t\t\t\tawslogs-stream-prefix = ${1:sample}",
+            "\t\t\t\t\tawslogs-group         = aws_cloudwatch_log_group.${1:sample}.name",
+            "\t\t\t\t}",
+            "\t\t\t\t}",
+            "\t\t\t}",
+            "\t\t]",
+            "\t)",
+            "}",
+        ]
+    },
+
+    // LoadBalancer
+    "LoadBalancer": {
+        "scope": "terraform",
+        "prefix": "nlb",
+        "body": [
+            "resource \"aws_lb\" \"${1:sample}\" {",
+            "\tname               = \"alb-${1:sample}\"",
+            "\tload_balancer_type = \"network\"",
+            "\tinternal           = true",
+            "\tsubnets            = var.subnet_ids",
+            "}",
+            "",
+            "resource \"aws_lb_target_group\" \"${1:sample}\" {",
+            "\tname        = \"${1:sample}\"",
+            "\ttarget_type = \"ip\"",
+            "\tvpc_id      = var.vpc_id",
+            "\tport        = ${2:container_port}",
+            "\tprotocol    = \"TCP\"",
+            "\thealth_check {",
+            "\t\tport                = \"traffic-port\"",
+            "\t\tprotocol            = \"TCP\"",
+            "\t\tinterval            = 60",
+            "\t\thealthy_threshold   = 2",
+            "\t\tunhealthy_threshold = 2",
+            "\t}",
+            "}",
+            "",
+            "resource \"aws_lb_listener\" \"${1:sample}\" {",
+            "\tload_balancer_arn = aws_lb.${1:sample}.arn",
+            "\tport              = ${3:open_port}",
+            "\tprotocol          = \"TCP\"",
+            "",
+            "\tdefault_action {",
+            "\t\ttype             = \"forward\"",
+            "\t\ttarget_group_arn = aws_lb_target_group.${1:sample}.arn",
+            "\t}",
+            "}"
+        ]
+    },
+
+    // CodeBuild
+    "CodeBuild": {
+        "scope": "terraform",
+        "prefix": "codebuild",
+        "body": [
+            "resource \"aws_codebuild_project\" \"${1:sample}\" {",
+            "\tname          = \"codebuild-${1:sample}\"",
+            "\tservice_role  = var.codebuild_role.arn",
+            "\tbuild_timeout = 60",
+            "",
+            "\tenvironment {",
+            "\t\tcompute_type                = \"BUILD_GENERAL1_SMALL\"",
+            "\t\timage                       = \"aws/codebuild/standard:5.0\"",
+            "\t\ttype                        = \"LINUX_CONTAINER\"",
+            "\t\timage_pull_credentials_type = \"CODEBUILD\"",
+            "\t\tenvironment_variable {",
+            "\t\t\tname  = \"BITBUCKET_AUTHORIZATION_TOKEN\"",
+            "\t\t\tvalue = aws_codebuild_source_credential.${1:sample}.token",
+            "\t\t}",
+            "\t}",
+            "\t",
+            "\tsource {",
+            "\t\tbuildspec = templatefile(\"${path.module}/buildspec/buildspec.yaml\", {",
+            "\t\t\taccount_id      = ${3:account_id}",
+            "\t\t\tregion          = ${4:region}",
+            "\t\t\trepository_name = aws_ecr_repository.main.repository_name",
+            "\t\t\trepository_url  = aws_ecr_repository.${1:sample}.repository_url",
+            "\t\t\tversion         = latest",
+            "\t\t})",
+            "\t\ttype                = \"BITBUCKET\"",
+            "\t\tlocation            = \"${2:bitbucket_url}\"",
+            "\t\tgit_clone_depth     = 1",
+            "\t\treport_build_status = false",
+            "\t}",
+            "",
+            "\tlifecycle {",
+            "\t\tignore_changes = [project_visibility]",
+            "\t}",
+            "",
+            "\tsource_version = \"develop\"",
+            "",
+            "\tartifacts {",
+            "\t\ttype = \"NO_ARTIFACTS\"",
+            "\t}",
+            "}",
+            "",
+            "resource \"aws_codebuild_source_credential\" \"${1:sample}\" {",
+            "\tauth_type   = \"PERSONAL_ACCESS_TOKEN\"",
+            "\tserver_type = \"BITBUCKET\"",
+            "\ttoken       = var.bitbucket_access_token",
+            "}",
+            "",
+            "resource \"aws_codebuild_webhook\" \"${1:sample}\" {",
+            "\tproject_name = aws_codebuild_project.${1:sample}.name",
+            "\tbuild_type   = \"BUILD\"",
+            "\tfilter_group {",
+            "\t\tfilter {",
+            "\t\t\ttype    = \"EVENT\"",
+            "\t\t\tpattern = \"PUSH\"",
+            "\t\t}",
+            "\t\tfilter {",
+            "\t\t\ttype    = \"HEAD_REF\"",
+            "\t\t\tpattern = \"develop\"",
+            "\t\t}",
+            "\t}",
+            "}"
+        ]
+    },
+
+}
