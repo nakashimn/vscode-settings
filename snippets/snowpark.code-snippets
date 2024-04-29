@@ -1,0 +1,47 @@
+{
+	"snowpark_session": {
+		"scope": "python",
+		"prefix": "snowpark_session",
+		"body": [
+			"session = Session.builder.configs(",
+			"\t{",
+			"\t\t\"account\": ${1:<xx12345.region.aws>},",
+			"\t\t\"user\": ${2:<username>},",
+			"\t\t\"password\": ${3:<password>},",
+			"\t\t\"role\": ${4:<role>},",
+			"\t\t\"warehouse\": ${5:<warehouse>}",
+			"\t}",
+			").create()",
+			"session.use_database(${6:<database>})",
+			"session.use_schema(${7:<schema>})",
+		]
+	},
+	"snowpark_read": {
+		"scope": "python",
+		"prefix": "snowpark_read",
+		"body": [
+			"df = session.sql(${1:<query>}).collect()"
+		]
+	},
+	"snowpark_read_as_pddf": {
+		"scope": "python",
+		"prefix": "snowpark_read_as_pd",
+		"body": [
+			"df = session.sql(${1:<query>}).to_pandas()"
+		]
+	},
+	"snowpark_pddf_to_snowdf": {
+		"scope": "python",
+		"prefix": "snowpark_pddf_to_snowdf",
+		"body": [
+			"snowdf = session.create_dataframe(${1:pddf})"
+		]
+	},
+	"snowpark_schema": {
+		"scope": "python",
+		"prefix": "snowpark_schema",
+		"body": [
+			"schema = StructType([StructField(\"ID\", IntegerType()), StructField(\"NAME\", StringType())])"
+		]
+	}
+}

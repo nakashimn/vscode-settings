@@ -99,6 +99,13 @@
 			"from sqlalchemy_utils import database_exists"
 		]
 	},
+	"import snowpark": {
+		"prefix": "import snowpark",
+		"body": [
+			"from snowflake.snowpark import Session",
+			"from snowflake.snowpark.types import StructField, StructType, StringType, IntegerType"
+		]
+	},
 	"import pandas.testing": {
 		"prefix": "import pdtest",
 		"body": [

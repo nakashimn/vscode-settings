@@ -1,0 +1,28 @@
+{
+	"select": {
+		"prefix": "select",
+		"body": [
+			"select ${2:*} from ${1:table} limit 10;"
+		]
+	},
+	"create_external_stage": {
+		"prefix": "create_external_stage",
+		"body": [
+			"create stage ${1:<STAGE_NAME>}",
+			"\turl = '${2:<URL>}'",
+			"\tstorage_integration = ${3:<INTEGRATION_NAME>};"
+		]
+	},
+	"describe_table": {
+		"prefix": "describe_table",
+		"body": [
+			"describe TABLE ${1:<TABLENAME>};"
+		]
+	},
+	"describe_view": {
+		"prefix": "describe_ivew",
+		"body": [
+			"describe VIEW ${1:<VIEWNAME>};"
+		]
+	}
+}
