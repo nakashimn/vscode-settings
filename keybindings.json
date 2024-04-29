@@ -124,6 +124,11 @@
         "command": "workbench.action.toggleZenMode"
     },
     {
+        "key": "ctrl+e",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "sideBarFocus"
+    },
+    {
         "key": "ctrl+shift+e",
         "command": "workbench.action.closeSidebar",
         "when": "sideBarFocus"
@@ -137,6 +142,15 @@
         "key": "ctrl+shift+e",
         "command": "workbench.action.focusFirstEditorGroup",
         "when": "activeEditorGroupIndex != '1'"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "snowflakeSearchableObjectExplorer.focus"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "view.snowflakeSearchableObjectExplorer.visible && !editorTextFocus"
     },
     {
         "key": "ctrl+shift+oem_comma",
@@ -857,5 +871,24 @@
         "key": "ctrl+home",
         "command": "-cursorTop",
         "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "-workbench.action.quickOpenNavigatePreviousInViewPicker",
+        "when": "inQuickOpen && inViewsPicker"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-workbench.action.quickOpenNavigateNextInFilePicker",
+        "when": "inFilesPicker && inQuickOpen"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-editor.action.toggleScreenReaderAccessibilityMode",
+        "when": "accessibilityHelpIsShown"
     }
 ]
