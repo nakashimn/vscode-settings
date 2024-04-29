@@ -1,7 +1,6 @@
 {
     // BaseSettings
     "default_setting": {
-        "scope": "terraform",
         "prefix": "default_setting",
         "body": [
             "terraform {",
@@ -26,7 +25,6 @@
 
     // Module
     "module": {
-        "scope": "terraform",
         "prefix": "module",
         "body": [
             "module \"${1:module_name}\" {",
@@ -38,7 +36,6 @@
 
     // IAMRole
     "ResourceRole": {
-        "scope": "terraform",
         "prefix": "resource_role",
         "body": [
             "resource \"aws_iam_role\" \"${1:sample}\" {",
@@ -54,7 +51,6 @@
 
     // IAMPolicy
     "AssumeRolePolicy": {
-        "scope": "terraform",
         "prefix": "assume_role_policy",
         "body": [
             "{",
@@ -72,7 +68,6 @@
         ]
     },
     "PolicyTemplate": {
-        "scope": "terraform",
         "prefix": "policy_template",
         "body": [
             "resource \"aws_iam_policy\" \"${1:sample}\" {",
@@ -95,7 +90,6 @@
 
     // VPC
     "VPC": {
-        "scope": "terraform",
         "prefix": "vpc",
         "body": [
             "resource \"aws_vpc\" \"main\" {",
@@ -106,7 +100,6 @@
 
     // Subnet
     "PublicSubnet": {
-        "scope": "terraform",
         "prefix": "subnet(public)",
         "body": [
             "# PublicSubnet定義",
@@ -150,7 +143,6 @@
         ]
     },
     "PrivateSubnet": {
-        "scope": "terraform",
         "prefix": "subnet(private)",
         "body": [
             "# PrivateSubnet定義",
@@ -196,7 +188,6 @@
 
     // SecurityGroup
     "SecurityGroup": {
-        "scope": "terraform",
         "prefix": "security_group",
         "body": [
             "resource \"aws_security_group\" \"${1:sample}\" {",
@@ -217,7 +208,6 @@
 
     // InternetGateway
     "InternetGateway": {
-        "scope": "terraform",
         "prefix": "internet_gateway",
         "body": [
             "resource \"aws_internet_gateway\" \"main\" {",
@@ -228,7 +218,6 @@
 
     // NATGateway
     "NATGateway": {
-        "scope": "terraform",
         "prefix": "nat_gateway",
         "body": [
             "resource \"aws_nat_gateway\" \"main\" {",
@@ -253,7 +242,6 @@
 
     // Bucket
     "Bucket": {
-        "scope": "terraform",
         "prefix": "bucket",
         "body": [
             "resource \"aws_s3_bucket\" \"${1:sample}\" {",
@@ -264,7 +252,6 @@
 
     // LogGroup
     "LogGroup": {
-        "scope": "terraform",
         "prefix": "log_group",
         "body": [
             "resource \"aws_cloudwatch_log_group\" \"${1:sample}\" {",
@@ -276,7 +263,6 @@
 
     // ECR
     "ECR": {
-        "scope": "terraform",
         "prefix": "ecr",
         "body": [
             "resource \"aws_ecr_repository\" \"${1:sample}\" {",
@@ -291,7 +277,6 @@
 
     // ECS Batch
     "ECSBatch": {
-        "scope": "terraform",
         "prefix": "ecs_batch",
         "body": [
             "resource \"aws_cloudwatch_event_rule\" \"${1:sample}\" {",
@@ -319,7 +304,6 @@
 
     // ECS Service
     "ECSService": {
-        "scope": "terraform",
         "prefix": "ecs_service",
         "body": [
             "resource \"aws_ecs_service\" \"${1:sample}\" {",
@@ -344,7 +328,6 @@
 
     // ECS TaskDefinition
     "ECSTaskdefinition": {
-        "scope": "terraform",
         "prefix": "ecs_taskdefinition",
         "body": [
             "resource \"aws_ecs_cluster\" \"${1:sample}\" {",
@@ -357,8 +340,8 @@
             "\tnetwork_mode             = \"awsvpc\"",
             "\tcpu                      = 512",
             "\tmemory                   = 1024",
-            "\texecution_role_arn       = var.ecs_task_execution_role.arn",
-            "\ttask_role_arn            = var.ecs_task_role.arn",
+            "\texecution_role_arn       = aws_iam_role.ecs_task_execution.arn",
+            "\ttask_role_arn            = aws_iam_role.ecs_task.arn",
             "\tcontainer_definitions = jsonencode(",
             "\t\t[",
             "\t\t\t{",
@@ -393,7 +376,6 @@
 
     // LoadBalancer
     "LoadBalancer": {
-        "scope": "terraform",
         "prefix": "nlb",
         "body": [
             "resource \"aws_lb\" \"${1:sample}\" {",
@@ -433,12 +415,11 @@
 
     // CodeBuild
     "CodeBuild": {
-        "scope": "terraform",
         "prefix": "codebuild",
         "body": [
             "resource \"aws_codebuild_project\" \"${1:sample}\" {",
             "\tname          = \"codebuild-${1:sample}\"",
-            "\tservice_role  = var.codebuild_role.arn",
+            "\tservice_role  = aws_iam_role.codebuild.arn",
             "\tbuild_timeout = 60",
             "",
             "\tenvironment {",
@@ -498,6 +479,5 @@
             "\t}",
             "}"
         ]
-    },
-
+    }
 }
