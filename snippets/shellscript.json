@@ -63,7 +63,7 @@
 		]
 	},
 	"text_equal": {
-		"prefix": "=text",
+		"prefix": "eq_text",
 		"body": [
 			"[[ \"${${TM_SELECTED_TEXT}$0}\" == \\\"<TEXT>\\\" ]]"
 		]
@@ -81,27 +81,38 @@
 		]
 	},
 	"less than": {
-		"prefix": "<",
+		"prefix": "less_than",
 		"body": [
 			"(( $0 <  ))"
 		]
 	},
-	"less than or equal to": {
-		"prefix": "<=",
-		"body": [
-			"(( $0 <=  ))"
-		]
-	},
 	"greater than": {
-		"prefix": ">",
+		"prefix": "greater_than",
 		"body": [
 			"(( $0 >  ))"
 		]
 	},
-	"greater than or equal to": {
-		"prefix": ">=",
+	"current_fullpath": {
+		"prefix": "current_fullpath",
 		"body": [
-			"(( $0 >=  ))"
+			"$(cd $(dirname \\$0); pwd)"
+		]
+	},
+	"getargs": {
+		"prefix": "getargs",
+		"body": [
+			"while (( \\$# > 0 )); do",
+			"\tcase \\$1 in",
+			"\t\t-v | --version )",
+			"\t\t\techo",
+			"\t\t\t;;",
+			"\t\t-a | --arg )",
+			"\t\t\techo \\$2",
+			"\t\t\tshift",
+			"\t\t\t;;",
+			"\tesac",
+			"\tshift",
+			"done"
 		]
 	},
 	"error_check": {
