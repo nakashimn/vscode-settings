@@ -112,6 +112,15 @@
 			"import pandas.testing as pdtest"
 		]
 	},
+	"import boto3": {
+		"prefix": "import boto3",
+		"body": [
+			"from boto3.session import Session",
+			"from botocore.response import StreamingBody",
+			"from mypy_boto3_s3.service_resource import S3ServiceResource",
+			"from mypy_boto3_ecs import ECSClient"
+		]
+	},
 
 	// Logger
 
