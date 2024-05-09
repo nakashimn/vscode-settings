@@ -56,6 +56,15 @@
 			"fi"
 		]
 	},
+	"if null": {
+		"prefix": "if_null",
+		"body": [
+			"if [ -z $0 ]; then",
+			"\techo -e \"\\e[31m[Error]set value.\\e[0m\"",
+			"\texit",
+			"fi"
+		]
+	},
 	"command": {
 		"prefix": ["$()", "command"],
 		"body": [
