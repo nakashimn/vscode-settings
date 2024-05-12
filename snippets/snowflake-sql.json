@@ -1,8 +1,23 @@
 {
+	"type": {
+		"prefix": "type",
+		"body": [
+			"${1|NUMBER(38, 0),VARCHAR,BOOLEAN,DATE,DATETIME,TIME|}"
+		]
+	},
 	"select": {
 		"prefix": "select",
 		"body": [
 			"select ${2:*} from ${1:table} limit 10;"
+		]
+	},
+	"create_table": {
+		"prefix": "create",
+		"body": [
+			"create TABLE ${1:<TABLE>} (",
+			"\tID NUMBER NOT NULL PRIMARY KEY AUTOINCREMENT,",
+			"\t${2:<KEY>} ${3|NUMBER(38, 0),VARCHAR,BOOLEAN,DATE,DATETIME,TIME|} ${4|NOT NULL,PRIMARY KEY,AUTOINCREMENT,DEFAULT value|}",
+			");"
 		]
 	},
 	"create_external_stage": {
@@ -11,6 +26,36 @@
 			"create stage ${1:<STAGE_NAME>}",
 			"\turl = '${2:<URL>}'",
 			"\tstorage_integration = ${3:<INTEGRATION_NAME>};"
+		]
+	},
+	"create_external_stage(s3)": {
+		"prefix": "create_external_stage(s3)",
+		"body": [
+			"create stage ${1:<STAGE_NAME>}",
+			"\turl = 's3://${2:<BUCKET>}/${3:<PREFIX>}'",
+			"\tstorage_integration = ${4:<INTEGRATION_NAME>};"
+		]
+	},
+	"import_table": {
+		"prefix": "import_table",
+		"body": [
+			"create or replace external table ${1:<TABLE>} (",
+			"\tDATE_PART DATE as (TO_DATE(METADATA\\$FILENAME)) NOT NULL",
+			"\t, FILENAME VARCHAR as (METADATA\\$FILENAME) NOT NULL",
+			"\t, ${2:<KEY>} VARCHAR as (VALUE:c1::VARCHAR) NULL",
+			"\t, constraint PK_${3:<TABLE>} PRIMARY KEY (DATE_PART, ${4:<KEYS>})",
+			")",
+			"partition by (DATE_PART)",
+			"with LOCATION = @${5:<EXTERNAL_STAGE>}",
+			"AUTO_REFRESH = TRUE",
+			"FILE_FORMAT = (",
+			"\tTYPE = CSV",
+			"\tCOMPRESSION = GZIP",
+			"\tFIELD_DELIMITER = '\\t'",
+			"\tSKIP_HEADER = 1",
+			")",
+			"PATTERN = '.*\\.tzv\\.gz'",
+			";",
 		]
 	},
 	"describe_table": {
