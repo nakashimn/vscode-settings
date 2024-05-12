@@ -1,0 +1,50 @@
+{
+	"googlemaps_client": {
+		"scope": "python",
+		"prefix": "googlemaps_client",
+		"body": [
+			"api_key = os.getenv(\"GOOGLEMAPS_API_KEY\")",
+			"client = googlemaps.Client(api_key)"
+		]
+	},
+	"googlemaps_textsearch": {
+		"scope": "python",
+		"description": "find 20 places(max 60 places with paging)",
+		"prefix": "googlemaps_textsearch",
+		"body": [
+			"ret = client.places(",
+			"\t${1:<TEXT>},",
+			"\tlocation=${2:<LOCATION>},",
+			"\tradius=${3:<RADIUS>},",
+			"\tpage_token=ret.get(\"next_page_token\")",
+			")"
+		]
+	},
+	"googlemaps_nearbysearch": {
+		"scope": "python",
+		"description": "find 20 places(max 60 places with paging)",
+		"prefix": "googlemaps_nearbysearch",
+		"body": [
+			"ret = client.places_nearby(",
+			"\tkeyword=${1:<TEXT>},",
+			"\tlocation=${2:<LOCATION>},",
+			"\tradius=${3:<RADIUS>},",
+			"\tpage_token=ret.get(\"next_page_token\")",
+			")"
+		]
+	},
+	"googlemaps_geocoding": {
+		"scope": "python",
+		"prefix": "googlemaps_geocoding",
+		"body": [
+			"ret = client.geocode(address=${1:<ADDRESS>})"
+		]
+	},
+	"googlemap_location(center)": {
+		"scope": "python",
+		"prefix": "googlemaps_location(JPcenter)",
+		"body": [
+			"(36.0161952, 137.9906761)"
+		]
+	}
+}
