@@ -255,6 +255,12 @@
 			"re.findall(\"[a-z]+\", ${TM_SELECTED_TEXT}$0)"
 		]
 	},
+	"re.sub(format space)": {
+		"prefix": "re_sub",
+		"body": [
+			"re.sub(\"\\s+\", \" \", ${TM_SELECTED_TEXT}$0)"
+		]
+	},
 	"pbar": {
 		"prefix": "pbar",
 		"body": [
