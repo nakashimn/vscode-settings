@@ -41,7 +41,7 @@
 		]
 	},
 	"last_date": {
-		"prefix": "first_date",
+		"prefix": "last_date",
 		"body": [
 			"last_day(${1:<DATE>})"
 		]
@@ -151,7 +151,7 @@
 	"duplicated": {
 		"prefix": "duplicated",
 		"body": [
-			"select <VALUE>, count(*) from <TABLE> group by <VALUE>;"
+			"select ${2:<VALUE>}, count(*) from ${1:<TABLE>} group by ${2:<VALUE>} order by count(*);"
 		]
 	},
 	"parse_date_from_filename": {
