@@ -5,35 +5,71 @@
 			"${1|number(38, 0),varchar(16777216),boolean,date,datetime,time|}"
 		]
 	},
+	// shortcut
 	"select": {
-		"prefix": "select",
+		"prefix": ["select", "_s"],
 		"body": [
-			"select ${2:*} from ${1:<TABLE>} limit 10;"
+			"select",
+			"\t$0"
+		]
+	},
+	"from": {
+		"prefix": ["from", "_f"],
+		"body": [
+			"from",
+			"\t$0"
+		]
+	},
+	"where": {
+		"prefix": ["where", "_w"],
+		"body": [
+			"where",
+			"\t$0"
+		]
+	},
+	"or": {
+		"prefix": ["or", "_o"],
+		"body": [
+			"or",
+			"\t$0"
+		]
+	},
+	"and": {
+		"prefix": ["and", "_a"],
+		"body": [
+			"and",
+			"\t$0"
+		]
+	},
+	"order by": {
+		"prefix": ["order by", "_o"],
+		"body": [
+			"order by",
+			"\t$0"
+		]
+	},
+	"with": {
+		"prefix": "with",
+		"body": [
+			"with",
+			"${1:<CTE>} as (",
+			"\tselect $0",
+			")",
+			"select",
+			"\t*",
+			"from",
+			"\t${1:<CTE>}",
+			";"
 		]
 	},
 	"left join": {
-		"prefix": "left join(not null)",
+		"prefix": ["left join", "_lj"],
 		"body": [
 			"left join",
-			"\t${2:<RIGHT>}",
-			"on",
-			"\t${1:<LEFT>}.${3:<KEY>} = ${2:<RIGHT>}.${3:<KEY>}",
-			"where",
-			"\t${2:<RIGHT>}.${3:<KEY>} is not null"
+			"\t$0"
 		]
 	},
-	"pivot": {
-		"prefix": "pivot",
-		"body": [
-			"pivot (",
-			"\t${1:sum(<VALUE>)}",
-			"\tfor",
-			"\t\t${2:<KEY>}",
-			"\tin",
-			"\t\t(select distinct ${2:<KEY>} from ${3:<TABLE>})",
-			")"
-		]
-	},
+	// value
 	"first_date": {
 		"prefix": "first_date",
 		"body": [
@@ -70,13 +106,38 @@
 			"to_varchar(${1:<DATE>}, 'YYYYMM')"
 		]
 	},
+	// template
+	"left join(not null)": {
+		"prefix": "left join(not null)",
+		"body": [
+			"left join",
+			"\t${2:<RIGHT>}",
+			"on",
+			"\t${1:<LEFT>}.${3:<KEY>} = ${2:<RIGHT>}.${3:<KEY>}",
+			"where",
+			"\t${2:<RIGHT>}.${3:<KEY>} is not null"
+		]
+	},
+	"pivot": {
+		"prefix": "pivot",
+		"body": [
+			"pivot (",
+			"\t${1:sum(<VALUE>)}",
+			"\tfor",
+			"\t\t${2:<KEY>}",
+			"\tin",
+			"\t\t(select distinct ${2:<KEY>} from ${3:<TABLE>})",
+			")"
+		]
+	},
 	"insert": {
 		"prefix": "insert",
 		"body": [
 			"insert into ${1:<TABLE>}",
 			"\t(${2:<KEYS>})",
 			"values",
-			"\t(${3:<VALUES>});"
+			"\t(${3:<VALUES>})",
+			";"
 		]
 	},
 	"upsert": {
@@ -98,11 +159,46 @@
 		"prefix": "create",
 		"body": [
 			"create table ${1:<TABLE>} (",
-			"\tid number not null primary key autoincrement,",
-			"\t${2:<KEY>} ${3|number(38\\, 0),varchar(16777216),boolean,date,datetime,time|} ${4|not null,primary key,autoincrement,default value|}",
+			"\tid number not null primary key autoincrement",
+			"\t, ${2:<KEY>} ${3|number(38\\, 0),varchar(16777216),boolean,date,datetime,time|} ${4|not null,primary key,autoincrement,default value|}",
 			");"
 		]
 	},
+	"add_column": {
+		"prefix": "add_column",
+		"body": [
+			"alter table",
+			"\t${1:<TABLE>}",
+			"add column",
+			"\t${2:<KEY>} ${3:<TYPE>}",
+			";"
+		]
+	},
+	"extract_by_group": {
+		"prefix": ["extract_by_group", "qualify"],
+		"body": [
+			"qualify",
+			"\trow_number() over (partition by ${1:<KEY>} order by ${2:<INDEX>} desc) = 1"
+		]
+	},
+	"comment(table)": {
+		"prefix": "comment(table)",
+		"body": [
+			"comment on table ${1:<TABLE>} is ${2:<COMMENT>};"
+		]
+	},
+	"comment(column)": {
+		"prefix": "comment(column)",
+		"body": [
+			"alter table",
+			"\t${1:<TABLE>}",
+			"alter (",
+			"\t${2:<KEY>} comment ${3:<COMMENT>}",
+			")",
+			";"
+		]
+	},
+	// external table
 	"create_external_stage": {
 		"prefix": "create_external_stage",
 		"body": [
@@ -136,6 +232,19 @@
 			";"
 		]
 	},
+	"parse_date_from_filename": {
+		"prefix": "parse_date_from_filename",
+		"body": [
+			"to_date(substring(split_part(metadata\\$filename, '_', -1), 1, 8), 'YYYYMMDD')"
+		]
+	},
+	"get_value_from_external_table": {
+		"prefix": "get_value_from_external_table",
+		"body": [
+			"cast(get(value, '${1:c1}') as varchar(16777216)) not null"
+		]
+	},
+	// debug
 	"describe_table": {
 		"prefix": "describe_table",
 		"body": [
@@ -148,22 +257,41 @@
 			"describe view ${1:<VIEWNAME>};"
 		]
 	},
+	"show columns": {
+		"prefix": ["show_columns", "showc"],
+		"body": [
+			"show columns in ${1:<TABLE>};"
+		]
+	},
 	"duplicated": {
 		"prefix": "duplicated",
 		"body": [
 			"select ${2:<VALUE>}, count(*) from ${1:<TABLE>} group by all order by count(*) desc;"
 		]
 	},
-	"parse_date_from_filename": {
-		"prefix": "parse_date_from_filename",
+	// system
+	"query_history": {
+		"prefix": "query_history",
 		"body": [
-			"to_date(substring(split_part(metadata\\$filename, '_', -1), 1, 8), 'YYYYMMDD')"
+			"select * from snowflake.account_usage.query_history order by start_time;"
 		]
 	},
-	"get_value_from_external_table": {
-		"prefix": "get_value_from_external_table",
+	"query_history(aggregate)": {
+		"prefix": "query_history(aggregate)",
 		"body": [
-			"cast(get(value, '${1:c1}') as varchar(16777216)) not null"
+			"select * from snowflake.account_usage.aggregate_query_history order by interval_start_time desc;"
+		]
+	},
+	"cancel_query": {
+		"prefix": "cancel_query",
+		"body": [
+			"select system\\$cancel_query(${1:<QUERY_ID>});"
+		]
+	},
+	"cancel_all_query": {
+		"prefix": "cancel_all_query",
+		"body": [
+			"select system\\$cancel_all_query(${1:<SESSION_ID>});"
 		]
 	},
 	// dbt
