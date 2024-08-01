@@ -7,45 +7,52 @@
 	},
 	// shortcut
 	"select": {
-		"prefix": ["select", "_s"],
+		"prefix": ["select", "sl"],
 		"body": [
 			"select",
 			"\t$0"
 		]
 	},
 	"from": {
-		"prefix": ["from", "_f"],
+		"prefix": ["from", "fm"],
 		"body": [
 			"from",
 			"\t$0"
 		]
 	},
 	"where": {
-		"prefix": ["where", "_w"],
+		"prefix": ["where", "wh"],
 		"body": [
 			"where",
 			"\t$0"
 		]
 	},
 	"or": {
-		"prefix": ["or", "_o"],
+		"prefix": ["or"],
 		"body": [
 			"or",
 			"\t$0"
 		]
 	},
 	"and": {
-		"prefix": ["and", "_a"],
+		"prefix": ["and", "an"],
 		"body": [
 			"and",
 			"\t$0"
 		]
 	},
 	"order by": {
-		"prefix": ["order by", "_o"],
+		"prefix": ["order by", "od"],
 		"body": [
 			"order by",
 			"\t$0"
+		]
+	},
+	"group by": {
+		"prefix": ["group by", "gp"],
+		"body": [
+			"group by",
+			"\t${1:all}"
 		]
 	},
 	"with": {
@@ -62,8 +69,17 @@
 			";"
 		]
 	},
+	"case": {
+		"prefix": ["case", "ca"],
+		"body": [
+			"case",
+			"\twhen ${1:<COND>} then ${2:<VALUE>}",
+			"\telse ${3:<VALUE>}",
+			"end"
+		]
+	},
 	"left join": {
-		"prefix": ["left join", "_lj"],
+		"prefix": ["left join", "lj"],
 		"body": [
 			"left join",
 			"\t$0"
@@ -140,6 +156,15 @@
 			";"
 		]
 	},
+	"update": {
+		"prefix": "update",
+		"body": [
+			"update ${1:<TABLE>}",
+			"set",
+			"\t${2:<KEY>} = ${3:<VALUE>}",
+			";"
+		]
+	},
 	"upsert": {
 		"prefix": "upsert",
 		"body": [
@@ -155,6 +180,27 @@
 			"\t\t);"
 		]
 	},
+	"random(uniform)": {
+		"prefix": "uniform",
+		"body": [
+			"uniform(${1:<min>}, ${2:<max>}, random())"
+		]
+	},
+	"sequence": {
+		"prefix": "seq",
+		"body": [
+			"select",
+			"\trow_number() over (order by seq4())",
+			"from",
+			"\ttable(generator(rowcount=>${1:10}))"
+		]
+	},
+	"generator": {
+		"prefix": "generator",
+		"body": [
+			"table(generator(rowcount=>${1:10}))"
+		]
+	},
 	"create_table": {
 		"prefix": "create",
 		"body": [
@@ -167,11 +213,25 @@
 	"add_column": {
 		"prefix": "add_column",
 		"body": [
-			"alter table",
-			"\t${1:<TABLE>}",
-			"add column",
-			"\t${2:<KEY>} ${3:<TYPE>}",
-			";"
+			"alter table ${1:<TABLE>} add column ${2:<KEY>} ${3:<TYPE>};"
+		]
+	},
+	"alter_column(not null)": {
+		"prefix": "alter_col(not null)",
+		"body": [
+			"alter table ${1:<TABLE>} modify column ${2:<KEY>} set not null;"
+		]
+	},
+	"alter_column(unique)": {
+		"prefix": "alter_col(unique)",
+		"body": [
+			"alter table ${1:<TABLE>} add constraint ${1:<CONSTRAINT_NAME>} unique (${2:<KEY>});"
+		]
+	},
+	"alter_column(primary_key)": {
+		"prefix": "alter_col(primary_key)",
+		"body": [
+			"alter table ${1:<TABLE>} add constraint ${1:<CONSTRAINT_NAME>} primary key (${2:<KEY>});"
 		]
 	},
 	"extract_by_group": {
@@ -190,12 +250,9 @@
 	"comment(column)": {
 		"prefix": "comment(column)",
 		"body": [
-			"alter table",
-			"\t${1:<TABLE>}",
-			"alter (",
+			"alter table ${1:<TABLE>} alter (",
 			"\t${2:<KEY>} comment ${3:<COMMENT>}",
-			")",
-			";"
+			");"
 		]
 	},
 	// external table
@@ -252,13 +309,13 @@
 		]
 	},
 	"describe_view": {
-		"prefix": "describe_ivew",
+		"prefix": "describe_view",
 		"body": [
 			"describe view ${1:<VIEWNAME>};"
 		]
 	},
 	"show columns": {
-		"prefix": ["show_columns", "showc"],
+		"prefix": ["show_columns", "sc"],
 		"body": [
 			"show columns in ${1:<TABLE>};"
 		]
@@ -282,16 +339,40 @@
 			"select * from snowflake.account_usage.aggregate_query_history order by interval_start_time desc;"
 		]
 	},
+	"last_query_id": {
+		"prefix": "last_query_id",
+		"body": [
+			"select last_query_id();"
+		]
+	},
+	"current_session": {
+		"prefix": "current_session",
+		"body": [
+			"select current_session();"
+		]
+	},
+	"cancel_last_query": {
+		"prefix": "cancel_last_query",
+		"body": [
+			"select system\\$cancel_query(last_query_id());"
+		]
+	},
+	"cancel_current_queries": {
+		"prefix": "cancel_current_queries",
+		"body": [
+			"select system\\$cancel_all_queries(current_session());"
+		]
+	},
 	"cancel_query": {
 		"prefix": "cancel_query",
 		"body": [
 			"select system\\$cancel_query(${1:<QUERY_ID>});"
 		]
 	},
-	"cancel_all_query": {
-		"prefix": "cancel_all_query",
+	"cancel_all_queries": {
+		"prefix": "cancel_all_queries",
 		"body": [
-			"select system\\$cancel_all_query(${1:<SESSION_ID>});"
+			"select system\\$cancel_all_queries(${1:<SESSION_ID>});"
 		]
 	},
 	// dbt
