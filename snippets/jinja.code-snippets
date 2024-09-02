@@ -1,0 +1,166 @@
+{
+	"expression": {
+		"scope": "snowflake-sql",
+		"prefix": ["_ex"],
+		"body": [
+			"{{ ${TM_SELECTED_TEXT}$0 }}"
+		]
+	},
+	"statement": {
+		"scope": "snowflake-sql",
+		"prefix": ["__st"],
+		"body": [
+			"{% ${TM_SELECTED_TEXT}$0 %}"
+		]
+	},
+	"execute": {
+		"scope": "snowflake-sql",
+		"prefix": ["exe"],
+		"body": [
+			"{% if execute %}"
+		]
+	},
+	"log": {
+		"scope": "snowflake-sql",
+		"prefix": "log",
+		"body": [
+			"{{ log(\"${TM_SELECTED_TEXT}$0\", ${2|info=true,warn=true,error=true|}) }}"
+		]
+	},
+	"return": {
+		"scope": "snowflake-sql",
+		"prefix": "return",
+		"body": [
+			"{{ return($1) }}"
+		]
+	},
+	"if": {
+		"scope": "snowflake-sql",
+		"prefix": "if",
+		"body": [
+			"{% if %}"
+		]
+	},
+	"endif": {
+		"scope": "snowflake-sql",
+		"prefix": "eif",
+		"body": [
+			"{% endif %}"
+		]
+	},
+	"if_endif": {
+		"scope": "snowflake-sql",
+		"prefix": "if_",
+		"body": [
+			"{% if %}",
+			"\t$0",
+			"{% elif %}",
+			"{% else %}",
+			"{% endif %}"
+		]
+	},
+	"for": {
+		"scope": "snowflake-sql",
+		"prefix": "for",
+		"body": [
+			"{% for %}"
+		]
+	},
+	"endfor": {
+		"scope": "snowflake-sql",
+		"prefix": "efor",
+		"body": [
+			"{% endfor %}"
+		]
+	},
+	"for_endfor": {
+		"scope": "snowflake-sql",
+		"prefix": "for_",
+		"body": [
+			"{% for ${1:item} in ${2:items} %}",
+			"\t$0",
+			"{% endfor %}"
+		]
+	},
+	"set": {
+		"scope": "snowflake-sql",
+		"prefix": "set",
+		"body": [
+			"{% set $0 %}"
+		]
+	},
+	"endset": {
+		"scope": "snowflake-sql",
+		"prefix": "eset",
+		"body": [
+			"{% endset %}"
+		]
+	},
+	"set_endset": {
+		"scope": "snowflake-sql",
+		"prefix": "set_",
+		"body": [
+			"{% set ${1:var} %}",
+			"\t$0",
+			"{% endset %}"
+		]
+	},
+	"macro": {
+		"scope": "snowflake-sql",
+		"prefix": "macro",
+		"body": [
+			"{% macro ${1:func()} %}",
+			"\t$0",
+			"{% endmacro %}"
+		]
+	},
+	"test": {
+		"scope": "snowflake-sql",
+		"prefix": "test",
+		"body": [
+			"{% test ${1:func()} %}",
+			"\t$0",
+			"{% endtest %}"
+		]
+	},
+	"run_query": {
+		"scope": "snowflake-sql",
+		"prefix": ["query", "sql"],
+		"body": [
+			"{% set %}",
+			"\t${1:<query>}",
+			"{% endset %}",
+			"",
+			"{% set result = run_query(query) %}"
+		]
+	},
+	"get_column": {
+		"scope": "snowflake-sql",
+		"prefix": ["get_col"],
+		"body": [
+			"{% set col = result.columns[${1:0}].values() %}"
+		]
+	},
+	"get_row": {
+		"scope": "snowflake-sql",
+		"prefix": ["get_row"],
+		"body": [
+			"{% set row = result.rows[${1:0}].values() %}"
+		]
+	},
+	"in": {
+		"scope": "snowflake-sql",
+		"prefix": ["in"],
+		"body": [
+			"{% set row = ${1:list} | select('in', ${2:ref}) %}"
+		]
+	},
+	"notin": {
+		"scope": "snowflake-sql",
+		"prefix": ["notin"],
+		"body": [
+			"{% set row = ${1:list} | reject('in', ${2:ref}) %}"
+		]
+	},
+
+}

@@ -301,6 +301,46 @@
 			"cast(get(value, '${1:c1}') as varchar(16777216)) not null"
 		]
 	},
+	// template
+	"colnames": {
+		"prefix": "get_colnames",
+		"body": [
+			"select",
+			"\t*",
+			"from",
+			"\t${1:<DB_NAME>}.information_schema.columns",
+			"where",
+			"\ttable_catalog = '${1:<DB_NAME>}'",
+			"and",
+			"\ttable_schema = '${2:<SCHEMA_NAME>}'",
+			"and",
+			"\ttable_name = '${3:<TABLE_NAME>}'",
+			";"
+		]
+	},
+	"object_dependencies": {
+		"prefix": "object_dependencies",
+		"body": [
+			"select",
+			"\treferenced_database",
+			"\t, referenced_schema",
+			"\t, referenced_object_name",
+			"\t, referenced_object_domain",
+			"\t, referencing_database",
+			"\t, referencing_schema",
+			"\t, referencing_object_name",
+			"\t, referencing_object_domain",
+			"from",
+			"\tsnowflake.account_usage.object_dependencies",
+			"where",
+			"\treferencing_database = '${1:<DB_NAME>}'",
+			"and",
+			"\treferencing_schema = '${2:<SCHEMA_NAME>}'",
+			"and",
+			"\treferencing_object_name = '${3:<TABLE_NAME>}'",
+			";"
+		]
+	},
 	// debug
 	"describe_table": {
 		"prefix": "describe_table",
