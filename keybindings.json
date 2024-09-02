@@ -77,6 +77,10 @@
         "command": "extension.table.formatAll",
         "when": "editorTextFocus"
     },
+    {
+        "key": "ctrl+shift+backspace",
+        "command": "editor.action.deleteLines"
+    },
 
     ////////////////////////////////////////////////////////////////////////////
     // focused window
@@ -890,5 +894,10 @@
         "key": "ctrl+e",
         "command": "-editor.action.toggleScreenReaderAccessibilityMode",
         "when": "accessibilityHelpIsShown"
-    }
+    },
+    {
+        "key": "ctrl+shift+backspace",
+        "command": "-search.searchEditor.action.deleteFileResults",
+        "when": "inSearchEditor"
+    },
 ]
