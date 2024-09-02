@@ -38,12 +38,26 @@
 		"scope": "snowflake-sql",
 		"prefix": "if",
 		"body": [
-			"{% if %}"
+			"{% if $1 %}"
+		]
+	},
+	"elif": {
+		"scope": "snowflake-sql",
+		"prefix": "elif",
+		"body": [
+			"{% elif $1 %}"
+		]
+	},
+	"else": {
+		"scope": "snowflake-sql",
+		"prefix": "else",
+		"body": [
+			"{% else %}"
 		]
 	},
 	"endif": {
 		"scope": "snowflake-sql",
-		"prefix": "eif",
+		"prefix": "endif",
 		"body": [
 			"{% endif %}"
 		]
@@ -52,10 +66,8 @@
 		"scope": "snowflake-sql",
 		"prefix": "if_",
 		"body": [
-			"{% if %}",
+			"{% if $1 %}",
 			"\t$0",
-			"{% elif %}",
-			"{% else %}",
 			"{% endif %}"
 		]
 	},
@@ -63,12 +75,12 @@
 		"scope": "snowflake-sql",
 		"prefix": "for",
 		"body": [
-			"{% for %}"
+			"{% for ${1:item} in ${2:items} %}"
 		]
 	},
 	"endfor": {
 		"scope": "snowflake-sql",
-		"prefix": "efor",
+		"prefix": "endfor",
 		"body": [
 			"{% endfor %}"
 		]
@@ -86,12 +98,12 @@
 		"scope": "snowflake-sql",
 		"prefix": "set",
 		"body": [
-			"{% set $0 %}"
+			"{% set $1 %}"
 		]
 	},
 	"endset": {
 		"scope": "snowflake-sql",
-		"prefix": "eset",
+		"prefix": "endset",
 		"body": [
 			"{% endset %}"
 		]
