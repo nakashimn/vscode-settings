@@ -96,6 +96,7 @@
     // for each file format //
     // liquid
     "[liquid]": {
+        "editor.tabSize": 2,
         "files.insertFinalNewline": false
     },
 
@@ -119,6 +120,10 @@
     // sql
     "[sql]": {
         "editor.defaultFormatter": "henriblancke.vscode-dbtpformatter"
+    },
+
+    "[typescript]": {
+        "editor.tabSize": 2
     },
 
     // etc //
