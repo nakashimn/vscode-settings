@@ -1,0 +1,127 @@
+{
+	"font awesome": {
+		"scope": "markdown",
+		"prefix": "fa",
+		"body": "fa:fa-"
+	},
+	"user": {
+		"scope": "markdown",
+		"prefix": "fa-user",
+		"body": "fa:fa-user"
+	},
+	"users": {
+		"scope": "markdown",
+		"prefix": "fa-users",
+		"body": "fa:fa-users"
+	},
+	"user-cog": {
+		"scope": "markdown",
+		"prefix": "fa-user-cog",
+		"body": "fa:fa-user-cog"
+	},
+	"user-edit": {
+		"scope": "markdown",
+		"prefix": "fa-user-edit",
+		"body": "fa:fa-user-edit"
+	},
+	"user-slash": {
+		"scope": "markdown",
+		"prefix": "fa-user-slash",
+		"body": "fa:fa-user-slash"
+	},
+	"file": {
+		"scope": "markdown",
+		"prefix": "fa-file",
+		"body": "fa:fa-file"
+	},
+	"folder": {
+		"scope": "markdown",
+		"prefix": "fa-folder",
+		"body": "fa:fa-folder-open"
+	},
+	"database": {
+		"scope": "markdown",
+		"prefix": "fa-database",
+		"body": "fa:fa-database"
+	},
+	"cloud": {
+		"scope": "markdown",
+		"prefix": "fa-cloud",
+		"body": "fa:fa-cloud"
+	},
+	"list": {
+		"scope": "markdown",
+		"prefix": "fa-list",
+		"body": "fa:fa-list"
+	},
+	"comment": {
+		"scope": "markdown",
+		"prefix": "fa-comment",
+		"body": "fa:fa-comment"
+	},
+	"network": {
+		"scope": "markdown",
+		"prefix": "fa-network-wired",
+		"body": "fa:fa-network-wired"
+	},
+	"search": {
+		"scope": "markdown",
+		"prefix": "fa-search",
+		"body": "fa:fa-search"
+	},
+	"power-off": {
+		"scope": "markdown",
+		"prefix": "fa-power",
+		"body": "fa:fa-power-off"
+	},
+	"layer": {
+		"scope": "markdown",
+		"prefix": "fa-layer",
+		"body": "fa:fa-layer-group"
+	},
+	"glasses": {
+		"scope": "markdown",
+		"prefix": "fa-glasses",
+		"body": "fa:fa-glasses"
+	},
+	"eye": {
+		"scope": "markdown",
+		"prefix": "fa-eye",
+		"body": "fa:fa-eye"
+	},
+	"shop": {
+		"scope": "markdown",
+		"prefix": "fa-shop",
+		"body": "fa:fa-shop"
+	},
+	"cart": {
+		"scope": "markdown",
+		"prefix": "fa-cart",
+		"body": "fa:fa-cart-shopping"
+	},
+	"box": {
+		"scope": "markdown",
+		"prefix": "fa-box",
+		"body": "fa:fa-box"
+	},
+	"register": {
+		"scope": "markdown",
+		"prefix": "fa-register",
+		"body": "fa:fa-cash-register"
+	},
+	"money": {
+		"scope": "markdown",
+		"prefix": "fa-money",
+		"body": "fa:fa-money-bill-wave"
+	},
+	"smile": {
+		"scope": "markdown",
+		"prefix": "fa-smile",
+		"body": "fa:fa-laugh"
+	},
+	"frown": {
+		"scope": "markdown",
+		"prefix": "fa-frown",
+		"body": "fa:fa-frown"
+	}
+}

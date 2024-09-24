@@ -144,5 +144,26 @@
 			"",
 			"# end"
 		]
+	},
+	"aws_architecture(mermaid)": {
+		"prefix": "aws",
+		"body": [
+			"```mermaid",
+			"architecture-beta",
+			"\tgroup aws(logos:aws)",
+			"\tgroup vpc(logos:aws-vpc) in aws",
+			"",
+			"\tservice apig(logos:aws-api-gateway) in aws",
+			"\tservice s3(logos:aws-s3) in aws",
+			"",
+			"\tgroup private[private] in vpc",
+			"\t\tservice nlb(logos:aws-elb) in private",
+			"\t\tservice ecs(logos:aws-ecs) in private",
+			"",
+			"\tapig:R -- L:nlb",
+			"\tnlb:B -- T:ecs",
+			"\tecs:L -- R:s3",
+			"```"
+		]
 	}
 }
