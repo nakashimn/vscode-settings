@@ -127,9 +127,12 @@
 	"Logger":{
 		"prefix":"logger_",
 		"body":[
-			"from logging import getLogger, Logger, Handler, StreamHandler, DEBUG",
+			"from logging import getLogger, Logger, Formatter, Handler, StreamHandler, DEBUG",
+			"from pythonjsonlogger.jsonlogger import JsonFormatter",
 			"default_logger: Logger = getLogger(__name__)",
+			"formatter: Formatter = JsonFormatter(\"%(levelname)s %(module)s %(funcName)s %(message)s\")",
 			"handler: Handler = StreamHandler()",
+			"handler.setFormatter(formatter)",
 			"default_logger.addHandler(handler)",
 			"default_logger.setLevel(DEBUG)",
 			"default_logger.propagate = False"
@@ -138,9 +141,12 @@
 	"NullLogger": {
 		"prefix": "logger_(null)",
 		"body": [
-			"from logging import getLogger, Logger, Handler, NullHandler",
+			"from logging import getLogger, Logger, Formatter, Handler, NullHandler",
+			"from pythonjsonlogger.jsonlogger import JsonFormatter",
 			"null_logger: Logger = getLogger(__name__)",
+			"formatter: Formatter = JsonFormatter(\"%(levelname)s %(module)s %(funcName)s %(message)s\")",
 			"handler: Handler = NullHandler()",
+			"handler.setFormatter(formatter)",
 			"null_logger.addHandler(handler)",
 			"null_logger.propagate = False"
 		]
@@ -159,6 +165,13 @@
 			"file_handler: Handler = FileHandler($0)",
 			"file_handler.setLevel(DEBUG)",
 			"logger.addHandler(file_handler)"
+		]
+	},
+	"JsonFormatter": {
+		"prefix": "formatter_(json)",
+		"body": [
+			"from pythonjsonlogger.jsonlogger import JsonFormatter",
+			"formatter: Formatter = JsonFormatter(\"%(asctime)s %(levelname)s %(module)s %(funcName)s %(message)s\")"
 		]
 	},
 	"warning(traceback)": {
@@ -183,7 +196,7 @@
 			"try:",
 			"\t${TM_SELECTED_TEXT}$0",
 			"except Exception as e:",
-			"\tlogger.warning(traceback.format_exec())"
+			"\tlogger.warning(e)"
 		]
 	},
 	"with open":{

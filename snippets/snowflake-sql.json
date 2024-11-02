@@ -2,156 +2,173 @@
 	"type": {
 		"prefix": "type",
 		"body": [
-			"${1|number(38, 0),varchar(16777216),boolean,date,datetime,time|}"
+			"${1|NUMBER(38, 0),VARCHAR(16777216),BOOLEAN,DATE,DATETIME,TIME|}"
 		]
 	},
 	// shortcut
-	"select": {
-		"prefix": ["select", "sl"],
+	"SELECT": {
+		"prefix": ["SELECT", "sl"],
 		"body": [
-			"select",
+			"SELECT",
 			"\t$0"
 		]
 	},
-	"from": {
-		"prefix": ["from", "fm"],
+	"FROM": {
+		"prefix": ["FROM", "fm"],
 		"body": [
-			"from",
+			"FROM",
 			"\t$0"
 		]
 	},
-	"where": {
-		"prefix": ["where", "wh"],
+	"WHERE": {
+		"prefix": ["WHERE", "wh"],
 		"body": [
-			"where",
+			"WHERE",
 			"\t$0"
 		]
 	},
-	"or": {
-		"prefix": ["or"],
+	"OR": {
+		"prefix": ["OR"],
 		"body": [
-			"or",
+			"OR",
 			"\t$0"
 		]
 	},
-	"and": {
-		"prefix": ["and", "an"],
+	"AND": {
+		"prefix": ["AND", "an"],
 		"body": [
-			"and",
+			"AND",
 			"\t$0"
 		]
 	},
-	"order by": {
-		"prefix": ["order by", "od"],
+	"ORDER BY": {
+		"prefix": ["ORDER BY", "od"],
 		"body": [
-			"order by",
+			"ORDER BY",
 			"\t$0"
 		]
 	},
-	"group by": {
-		"prefix": ["group by", "gp"],
+	"GROUP BY": {
+		"prefix": ["GROUP BY", "gp"],
 		"body": [
-			"group by",
-			"\t${1:all}"
+			"GROUP BY",
+			"\t${1:ALL}"
 		]
 	},
-	"with": {
-		"prefix": "with",
+	"WITH": {
+		"prefix": "WITH",
 		"body": [
-			"with",
-			"${1:<CTE>} as (",
-			"\tselect $0",
+			"WITH",
+			"${1:<CTE>} AS (",
+			"\tSELECT $0",
 			")",
-			"select",
+			"SELECT",
 			"\t*",
-			"from",
+			"FROM",
 			"\t${1:<CTE>}",
 			";"
 		]
 	},
-	"case": {
-		"prefix": ["case", "ca"],
+	"CASE": {
+		"prefix": ["CASE", "ca"],
 		"body": [
-			"case",
-			"\twhen ${1:<COND>} then ${2:<VALUE>}",
-			"\telse ${3:<VALUE>}",
-			"end"
+			"CASE",
+			"\tWHEN ${1:<COND>} THEN ${2:<VALUE>}",
+			"\tELSE ${3:<VALUE>}",
+			"END"
 		]
 	},
-	"left join": {
-		"prefix": ["left join", "lj"],
+	"INNER JOIN": {
+		"prefix": ["INNER JOIN", "ij"],
 		"body": [
-			"left join",
-			"\t$0"
+			"INNER JOIN",
+			"\t$0",
+			"ON"
+		]
+	},
+	"LEFT JOIN": {
+		"prefix": ["LEFT JOIN", "lj"],
+		"body": [
+			"LEFT JOIN",
+			"\t$0",
+			"ON"
+		]
+	},
+	"OUTER JOIN": {
+		"prefix": ["OUTER JOIN", "oj"],
+		"body": [
+			"FULL OUTER JOIN",
+			"\t$0",
+			"ON"
 		]
 	},
 	// value
 	"first_date": {
 		"prefix": "first_date",
 		"body": [
-			"date_trunc('month', ${1:<DATE>})"
+			"DATE_TRUNC('month', ${1:<DATE>})"
 		]
 	},
 	"last_date": {
 		"prefix": "last_date",
 		"body": [
-			"last_day(${1:<DATE>})"
+			"LAST_DAY(${1:<DATE>})"
 		]
 	},
 	"today": {
 		"prefix": "today",
 		"body": [
-			"current_date()"
+			"CURRENT_DATE()"
 		]
 	},
 	"yesterday": {
 		"prefix": "yesterday",
 		"body": [
-			"dateadd('day', -1, current_date())"
+			"DATEADD('day', -1, CURRENT_DATE())"
 		]
 	},
 	"tomorrow": {
 		"prefix": "tomorrow",
 		"body": [
-			"dateadd('day', 1, current_date())"
+			"DATEADD('day', 1, CURRENT_DATE())"
 		]
 	},
 	"yearmonth": {
 		"prefix": "yearmonth",
 		"body": [
-			"to_varchar(${1:<DATE>}, 'YYYYMM')"
+			"TO_VARCHAR(${1:<DATE>}, 'YYYYMM')"
 		]
 	},
 	// template
-	"left join(not null)": {
-		"prefix": "left join(not null)",
+	"LEFT JOIN(not null)": {
+		"prefix": "LEFT JOIN(not null)",
 		"body": [
-			"left join",
+			"LEFT JOIN",
 			"\t${2:<RIGHT>}",
-			"on",
+			"ON",
 			"\t${1:<LEFT>}.${3:<KEY>} = ${2:<RIGHT>}.${3:<KEY>}",
-			"where",
-			"\t${2:<RIGHT>}.${3:<KEY>} is not null"
+			"WHERE",
+			"\t${2:<RIGHT>}.${3:<KEY>} IS NOT NULL"
 		]
 	},
 	"pivot": {
 		"prefix": "pivot",
 		"body": [
-			"pivot (",
-			"\t${1:sum(<VALUE>)}",
-			"\tfor",
+			"PIVOT (",
+			"\t${1:SUM(<VALUE>)}",
+			"\tFOR",
 			"\t\t${2:<KEY>}",
-			"\tin",
-			"\t\t(select distinct ${2:<KEY>} from ${3:<TABLE>})",
+			"\tIN",
+			"\t\t(SELECT DISTINCT ${2:<KEY>} FROM ${3:<TABLE>})",
 			")"
 		]
 	},
 	"insert": {
 		"prefix": "insert",
 		"body": [
-			"insert into ${1:<TABLE>}",
+			"INSERT INTO ${1:<TABLE>}",
 			"\t(${2:<KEYS>})",
-			"values",
+			"VALUES",
 			"\t(${3:<VALUES>})",
 			";"
 		]
@@ -159,8 +176,8 @@
 	"update": {
 		"prefix": "update",
 		"body": [
-			"update ${1:<TABLE>}",
-			"set",
+			"UPDATE ${1:<TABLE>}",
+			"SET",
 			"\t${2:<KEY>} = ${3:<VALUE>}",
 			";"
 		]
@@ -168,14 +185,14 @@
 	"upsert": {
 		"prefix": "upsert",
 		"body": [
-			"merge into ${1:<TARGET>} as TARGET",
-			"\tusing ${2:<SOURCE>} as SOURCE",
-			"\ton TARGET.ID = SOURCE.ID",
-			"\twhen matched then",
-			"\t\tupdate set",
+			"MERGE INTO ${1:<TARGET>} AS TARGET",
+			"\tUSING ${2:<SOURCE>} AS SOURCE",
+			"\tON TARGET.ID = SOURCE.ID",
+			"\tWHEN MATCHED THEN",
+			"\t\tUPDATE SET",
 			"\t\t\tTARGET.VALUE=SOURCE.VALUE",
-			"\twhen not matched then",
-			"\t\tinsert (ID, VALUE) values (",
+			"\tWHEN NOT MATCHED THEN",
+			"\t\tINSERT (ID, VALUE) VALUES (",
 			"\t\t\tSOURCE.ID, SOURCE.VALUE",
 			"\t\t);"
 		]
@@ -183,75 +200,75 @@
 	"random(uniform)": {
 		"prefix": "uniform",
 		"body": [
-			"uniform(${1:<min>}, ${2:<max>}, random())"
+			"UNIFORM(${1:<min>}, ${2:<max>}, RANDOM())"
 		]
 	},
 	"sequence": {
 		"prefix": "seq",
 		"body": [
-			"select",
-			"\trow_number() over (order by seq4())",
-			"from",
-			"\ttable(generator(rowcount=>${1:10}))"
+			"SELECT",
+			"\tROW_NUMBER() OVER (ORDER BY SEQ4())",
+			"FROM",
+			"\tTABLE(GENERATOR(ROWCOUNT=>${1:10}))"
 		]
 	},
 	"generator": {
 		"prefix": "generator",
 		"body": [
-			"table(generator(rowcount=>${1:10}))"
+			"TABLE(GENERATOR(ROWCOUNT=>${1:10}))"
 		]
 	},
 	"create_table": {
 		"prefix": "create",
 		"body": [
-			"create table ${1:<TABLE>} (",
-			"\tid number not null primary key autoincrement",
-			"\t, ${2:<KEY>} ${3|number(38\\, 0),varchar(16777216),boolean,date,datetime,time|} ${4|not null,primary key,autoincrement,default value|}",
+			"CREATE TABLE ${1:<TABLE>} (",
+			"\tID NUMBER NOT NULL PRIMARY KEY AUTOINCREMENT",
+			"\t, ${2:<KEY>} ${3|NUMBER(38\\, 0),VARCHAR(16777216),BOOLEAN,DATE,DATETIME,TIME|} ${4|NOT NULL,PRIMARY KEY,AUTOINCREMENT,DEFAULT VALUE|}",
 			");"
 		]
 	},
 	"add_column": {
 		"prefix": "add_column",
 		"body": [
-			"alter table ${1:<TABLE>} add column ${2:<KEY>} ${3:<TYPE>};"
+			"ALTER TABLE ${1:<TABLE>} ADD COLUMN ${2:<KEY>} ${3:<TYPE>};"
 		]
 	},
 	"alter_column(not null)": {
 		"prefix": "alter_col(not null)",
 		"body": [
-			"alter table ${1:<TABLE>} modify column ${2:<KEY>} set not null;"
+			"ALTER TABLE ${1:<TABLE>} MODIFY COLUMN ${2:<KEY>} SET NOT NULL;"
 		]
 	},
 	"alter_column(unique)": {
 		"prefix": "alter_col(unique)",
 		"body": [
-			"alter table ${1:<TABLE>} add constraint ${1:<CONSTRAINT_NAME>} unique (${2:<KEY>});"
+			"ALTER TABLE ${1:<TABLE>} ADD CONSTRAINT ${1:<CONSTRAINT_NAME>} UNIQUE (${2:<KEY>});"
 		]
 	},
 	"alter_column(primary_key)": {
 		"prefix": "alter_col(primary_key)",
 		"body": [
-			"alter table ${1:<TABLE>} add constraint ${1:<CONSTRAINT_NAME>} primary key (${2:<KEY>});"
+			"ALTER TABLE ${1:<TABLE>} ADD CONSTRAINT ${1:<CONSTRAINT_NAME>} PRIMARY KEY (${2:<KEY>});"
 		]
 	},
 	"extract_by_group": {
 		"prefix": ["extract_by_group", "qualify"],
 		"body": [
-			"qualify",
-			"\trow_number() over (partition by ${1:<KEY>} order by ${2:<INDEX>} desc) = 1"
+			"QUALIFY",
+			"\tROW_NUMBER() OVER (PARTITION BY ${1:<KEY>} ORDER BY ${2:<INDEX>} DESC) = 1"
 		]
 	},
 	"comment(table)": {
 		"prefix": "comment(table)",
 		"body": [
-			"comment on table ${1:<TABLE>} is ${2:<COMMENT>};"
+			"COMMENT ON TABLE ${1:<TABLE>} IS ${2:<COMMENT>};"
 		]
 	},
 	"comment(column)": {
 		"prefix": "comment(column)",
 		"body": [
-			"alter table ${1:<TABLE>} alter (",
-			"\t${2:<KEY>} comment ${3:<COMMENT>}",
+			"ALTER TABLE ${1:<TABLE>} ALTER (",
+			"\t${2:<KEY>} COMMENT ${3:<COMMENT>}",
 			");"
 		]
 	},
@@ -259,32 +276,32 @@
 	"create_external_stage": {
 		"prefix": "create_external_stage",
 		"body": [
-			"create stage ${1:<STAGE_NAME>}",
-			"\turl = '${2:<URL>}'",
-			"\tstorage_integration = ${3:<INTEGRATION_NAME>};"
+			"CREATE STAGE ${1:<STAGE_NAME>}",
+			"\tURL = '${2:<URL>}'",
+			"\tSTORAGE_INTEGRATION = ${3:<INTEGRATION_NAME>};"
 		]
 	},
 	"create_external_stage(s3)": {
 		"prefix": "create_external_stage(s3)",
 		"body": [
-			"create stage ${1:<STAGE_NAME>}",
-			"\turl = 's3://${2:<BUCKET>}/${3:<PREFIX>}'",
-			"\tstorage_integration = ${4:<INTEGRATION_NAME>};"
+			"CREATE STAGE ${1:<STAGE_NAME>}",
+			"\tURL = 'S3://${2:<BUCKET>}/${3:<PREFIX>}'",
+			"\tSTORAGE_INTEGRATION = ${4:<INTEGRATION_NAME>};"
 		]
 	},
 	"create_external_table": {
 		"prefix": "create_external_table",
 		"body": [
-			"create or replace external table ${1:<TABLE>} (",
-			"\tDATE_PART DATE as (TO_DATE(METADATA\\$FILENAME)) NOT NULL",
-			"\t, FILENAME VARCHAR as (METADATA\\$FILENAME) NOT NULL",
-			"\t, ${2:<KEY>} VARCHAR as (VALUE:c1::VARCHAR) NULL",
-			"\t, constraint PK_${3:<TABLE>} PRIMARY KEY (DATE_PART, ${4:<KEY>})",
+			"CREATE OR REPLACE EXTERNAL TABLE ${1:<TABLE>} (",
+			"\tDATE_PART DATE AS (TO_DATE(METADATA\\$FILENAME)) NOT NULL",
+			"\t, FILENAME VARCHAR AS (METADATA\\$FILENAME) NOT NULL",
+			"\t, ${2:<KEY>} VARCHAR AS (VALUE:c1::VARCHAR) NULL",
+			"\t, CONSTRAINT PK_${3:<TABLE>} PRIMARY KEY (DATE_PART, ${4:<KEY>})",
 			")",
-			"partition by (DATE_PART)",
-			"location=@${5:<EXTERNAL_STAGE>}",
-			"auto_refresh=false",
-			"file_format=(TYPE=CSV FIELD_DELIMITER=',' SKIP_HEADER=1 COMPRESSION=GZIP)",
+			"PARTITION BY (DATE_PART)",
+			"LOCATION=@${5:<EXTERNAL_STAGE>}",
+			"AUTO_REFRESH=FALSE",
+			"FILE_FORMAT=(TYPE=CSV FIELD_DELIMITER=',' SKIP_HEADER=1 COMPRESSION=GZIP)",
 			"PATTERN = '.*.czv.gz'",
 			";"
 		]
@@ -292,52 +309,52 @@
 	"parse_date_from_filename": {
 		"prefix": "parse_date_from_filename",
 		"body": [
-			"to_date(substring(split_part(metadata\\$filename, '_', -1), 1, 8), 'YYYYMMDD')"
+			"TO_DATE(SUBSTRING(SPLIT_PART(METADATA\\$FILENAME, '_', -1), 1, 8), 'YYYYMMDD')"
 		]
 	},
 	"get_value_from_external_table": {
 		"prefix": "get_value_from_external_table",
 		"body": [
-			"cast(get(value, '${1:c1}') as varchar(16777216)) not null"
+			"CAST(GET(VALUE, '${1:c1}') AS VARCHAR(16777216)) NOT NULL"
 		]
 	},
 	// template
 	"colnames": {
 		"prefix": "get_colnames",
 		"body": [
-			"select",
+			"SELECT",
 			"\t*",
-			"from",
-			"\t${1:<DB_NAME>}.information_schema.columns",
-			"where",
-			"\ttable_catalog = '${1:<DB_NAME>}'",
-			"and",
-			"\ttable_schema = '${2:<SCHEMA_NAME>}'",
-			"and",
-			"\ttable_name = '${3:<TABLE_NAME>}'",
+			"FROM",
+			"\t${1:<DB_NAME>}.INFORMATION_SCHEMA.COLUMNS",
+			"WHERE",
+			"\tTABLE_CATALOG = '${1:<DB_NAME>}'",
+			"AND",
+			"\tTABLE_SCHEMA = '${2:<SCHEMA_NAME>}'",
+			"AND",
+			"\tTABLE_NAME = '${3:<TABLE_NAME>}'",
 			";"
 		]
 	},
 	"object_dependencies": {
 		"prefix": "object_dependencies",
 		"body": [
-			"select",
-			"\treferenced_database",
-			"\t, referenced_schema",
-			"\t, referenced_object_name",
-			"\t, referenced_object_domain",
-			"\t, referencing_database",
-			"\t, referencing_schema",
-			"\t, referencing_object_name",
-			"\t, referencing_object_domain",
-			"from",
-			"\tsnowflake.account_usage.object_dependencies",
-			"where",
-			"\treferencing_database = '${1:<DB_NAME>}'",
-			"and",
-			"\treferencing_schema = '${2:<SCHEMA_NAME>}'",
-			"and",
-			"\treferencing_object_name = '${3:<TABLE_NAME>}'",
+			"SELECT",
+			"\tREFERENCED_DATABASE,",
+			"\tREFERENCED_SCHEMA,",
+			"\tREFERENCED_OBJECT_NAME,",
+			"\tREFERENCED_OBJECT_DOMAIN,",
+			"\tREFERENCING_DATABASE,",
+			"\tREFERENCING_SCHEMA,",
+			"\tREFERENCING_OBJECT_NAME,",
+			"\tREFERENCING_OBJECT_DOMAIN",
+			"FROM",
+			"\tSNOWFLAKE.ACCOUNT_USAGE.OBJECT_DEPENDENCIES",
+			"WHERE",
+			"\tREFERENCING_DATABASE = '${1:<DB_NAME>}'",
+			"AND",
+			"\tREFERENCING_SCHEMA = '${2:<SCHEMA_NAME>}'",
+			"AND",
+			"\tREFERENCING_OBJECT_NAME = '${3:<TABLE_NAME>}'",
 			";"
 		]
 	},
@@ -345,74 +362,74 @@
 	"describe_table": {
 		"prefix": "describe_table",
 		"body": [
-			"describe table ${1:<TABLENAME>};"
+			"DESCRIBE TABLE ${1:<TABLENAME>};"
 		]
 	},
 	"describe_view": {
 		"prefix": "describe_view",
 		"body": [
-			"describe view ${1:<VIEWNAME>};"
+			"DESCRIBE VIEW ${1:<VIEWNAME>};"
 		]
 	},
 	"show columns": {
 		"prefix": ["show_columns", "sc"],
 		"body": [
-			"show columns in ${1:<TABLE>};"
+			"SHOW COLUMNS IN ${1:<TABLE>};"
 		]
 	},
 	"duplicated": {
-		"prefix": "duplicated",
+		"prefix": ["count_unique", "duplicated"],
 		"body": [
-			"select ${2:<VALUE>}, count(*) from ${1:<TABLE>} group by all order by count(*) desc;"
+			"SELECT ${2:<VALUE>}, COUNT(*) FROM ${1:<TABLE>} GROUP BY ALL ORDER BY COUNT(*) DESC;"
 		]
 	},
 	// system
 	"query_history": {
 		"prefix": "query_history",
 		"body": [
-			"select * from snowflake.account_usage.query_history order by start_time;"
+			"SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY ORDER BY START_TIME;"
 		]
 	},
 	"query_history(aggregate)": {
 		"prefix": "query_history(aggregate)",
 		"body": [
-			"select * from snowflake.account_usage.aggregate_query_history order by interval_start_time desc;"
+			"SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.AGGREGATE_QUERY_HISTORY ORDER BY INTERVAL_START_TIME DESC;"
 		]
 	},
 	"last_query_id": {
 		"prefix": "last_query_id",
 		"body": [
-			"select last_query_id();"
+			"SELECT LAST_QUERY_ID();"
 		]
 	},
 	"current_session": {
 		"prefix": "current_session",
 		"body": [
-			"select current_session();"
+			"SELECT CURRENT_SESSION();"
 		]
 	},
 	"cancel_last_query": {
 		"prefix": "cancel_last_query",
 		"body": [
-			"select system\\$cancel_query(last_query_id());"
+			"SELECT SYSTEM\\$CANCEL_QUERY(LAST_QUERY_ID());"
 		]
 	},
 	"cancel_current_queries": {
 		"prefix": "cancel_current_queries",
 		"body": [
-			"select system\\$cancel_all_queries(current_session());"
+			"SELECT SYSTEM\\$CANCEL_ALL_QUERIES(CURRENT_SESSION());"
 		]
 	},
 	"cancel_query": {
 		"prefix": "cancel_query",
 		"body": [
-			"select system\\$cancel_query(${1:<QUERY_ID>});"
+			"SELECT SYSTEM\\$CANCEL_QUERY(${1:<QUERY_ID>});"
 		]
 	},
 	"cancel_all_queries": {
 		"prefix": "cancel_all_queries",
 		"body": [
-			"select system\\$cancel_all_queries(${1:<SESSION_ID>});"
+			"SELECT SYSTEM\\$CANCEL_ALL_QUERIES(${1:<SESSION_ID>});"
 		]
 	},
 	// dbt

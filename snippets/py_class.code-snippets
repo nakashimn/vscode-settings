@@ -6,6 +6,14 @@
 			"super().__init__($0)"
 		]
 	},
+	"class_func_name()": {
+		"scope": "python",
+		"prefix": ["class_func_name"],
+		"body": [
+			"def _class_func_name(self) -> str:",
+			"\treturn f\"{self.__class__.__name__}.{inspect.stack()[1].function}()\""
+		]
+	},
 	"JsonReader": {
 		"scope": "python",
 		"prefix": "JsonReader",
