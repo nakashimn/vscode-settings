@@ -138,8 +138,13 @@
         "when": "editorLangId == 'markdown'"
     },
     {
-        "key": "ctrl+shift+m",
+        "key": "ctrl+shift+m m",
         "command": "markdown-preview-enhanced.openPreviewToTheSide",
+        "when": "editorLangId == 'markdown'"
+    },
+    {
+        "key": "ctrl+shift+m p",
+        "command": "markmap-vscode.open",
         "when": "editorLangId == 'markdown'"
     },
     {
@@ -275,12 +280,24 @@
         "command": "git.push"
     },
     {
-        "key": "ctrl+shift+g f",
-        "command": "git.fetch"
-    },
-    {
         "key": "ctrl+shift+g m",
         "command": "git.merge"
+    },
+    {
+        "key": "ctrl+shift+g f",
+        "command": "git.viewFileHistory"
+    },
+    {
+        "key": "ctrl+shift+g t",
+        "command": "git.createTag"
+    },
+    {
+        "key": "ctrl+shift+g l",
+        "command": "gitlens.showGraphPage"
+    },
+    {
+        "key": "ctrl+shift+g ctrl+shift+p",
+        "command": "git.pushTags"
     },
     ////////////////////////////////////////////////////////////////////////////
     // remote ssh
@@ -953,5 +970,9 @@
         "key": "shift+alt+f",
         "command": "-editor.action.formatDocument",
         "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+    },
+    {
+        "key": "alt+h",
+        "command": "-git.viewFileHistory"
     }
 ]
