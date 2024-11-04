@@ -218,6 +218,12 @@
 			"TABLE(GENERATOR(ROWCOUNT=>${1:10}))"
 		]
 	},
+	"hash": {
+		"prefix": "hash",
+		"body": [
+			"HASH_AGG(*)"
+		]
+	},
 	"create_table": {
 		"prefix": "create",
 		"body": [
@@ -358,6 +364,31 @@
 			";"
 		]
 	},
+	"tables_are_equal": {
+		"prefix": "tables_are_equal",
+		"body": [
+			"WITH",
+			"ref AS (",
+			"\tSELECT",
+			"\t\tHASH_AGG(*)",
+			"\tFROM",
+			"\t\t<ref_table>",
+			"),",
+			"tgt AS (",
+			"\tSELECT",
+			"\t\tHASH_AGG(*)",
+			"\tFROM",
+			"\t\t<tgt_table>",
+			"),",
+			"diff AS (",
+			"\tSELECT * FROM ref",
+			"\tEXCEPT",
+			"\tSELECT * FROM tgt",
+			")",
+			"SELECT * FROM diff;"
+		]
+	},
+
 	// debug
 	"describe_table": {
 		"prefix": "describe_table",
@@ -372,7 +403,7 @@
 		]
 	},
 	"show columns": {
-		"prefix": ["show_columns", "sc"],
+		"prefix": ["show_columns", "sc", "showc"],
 		"body": [
 			"SHOW COLUMNS IN ${1:<TABLE>};"
 		]
@@ -451,4 +482,14 @@
 			"{% endif %}"
 		]
 	},
+	"macro_query": {
+		"prefix": "macro_query",
+		"body": [
+			"{% set query %}",
+			"\t$0",
+			"{% endset %}",
+			"{% set result = run_query(query) %}",
+			"{{ result.print_json() }}"
+		]
+	}
 }

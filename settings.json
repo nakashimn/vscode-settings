@@ -50,6 +50,9 @@
         "unpkg.com"
     ],
 
+    // liveserver
+    "liveServer.settings.donotShowInfoMsg": true,
+
     // markdown
     "markdown.copyFiles.destination": {
         "*": "imgs/${documentBaseName}/"
@@ -117,11 +120,24 @@
         "editor.formatOnType": true
     },
 
-    // sql
-    "[sql]": {
-        "editor.defaultFormatter": "henriblancke.vscode-dbtpformatter"
+    // snowflake-sql
+    "[snowflake-sql]": {
+        "editor.defaultFormatter": "henriblancke.vscode-dbtpformatter",
+        "editor.tabSize": 2
     },
 
+    // sql
+    "[sql]": {
+        "editor.defaultFormatter": "henriblancke.vscode-dbtpformatter",
+        "editor.tabSize": 2
+    },
+
+    // terraform
+    "[terraform]": {
+        "editor.tabSize": 2
+    },
+
+    // typescript
     "[typescript]": {
         "editor.tabSize": 2
     },

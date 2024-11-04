@@ -51,7 +51,6 @@
         "command": "cursorTop",
         "when": "textInputFocus"
     },
-
     ////////////////////////////////////////////////////////////////////////////
     // editor
     ////////////////////////////////////////////////////////////////////////////
@@ -73,15 +72,49 @@
         "command": "explorer.newFolder"
     },
     {
-        "key": "ctrl+shift+t",
+        "key": "ctrl+shift+t t",
         "command": "extension.table.formatAll",
+        "when": "editorLangId == 'markdown'"
+    },
+    {
+        "key": "ctrl+shift+t u",
+        "command": "editor.action.transformToUppercase",
         "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+t l",
+        "command": "editor.action.transformToLowercase",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+t k",
+        "command": "editor.action.transformToKebabcase",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+t c",
+        "command": "editor.action.transformToCamelcase",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+t s",
+        "command": "editor.action.transformToSnakecase",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+t p",
+        "command": "editor.action.transformToPascalcase",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+t f",
+        "command": "editor.action.formatDocument",
+        "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
     },
     {
         "key": "ctrl+shift+backspace",
         "command": "editor.action.deleteLines"
     },
-
     ////////////////////////////////////////////////////////////////////////////
     // focused window
     ////////////////////////////////////////////////////////////////////////////
@@ -149,7 +182,13 @@
     },
     {
         "key": "ctrl+shift+q",
-        "command": "snowflakeSearchableObjectExplorer.focus"
+        "command": "snowflakeSearchableObjectExplorer.focus",
+        "when": "snowflakeObjectDetails.active"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "snowflakeAccount.focus",
+        "when": "!snowflakeObjectDetails.active"
     },
     {
         "key": "ctrl+shift+q",
@@ -208,7 +247,6 @@
         "key": "ctrl+9",
         "command": "workbench.action.openEditorAtIndex9"
     },
-
     ////////////////////////////////////////////////////////////////////////////
     // git
     ////////////////////////////////////////////////////////////////////////////
@@ -244,7 +282,6 @@
         "key": "ctrl+shift+g m",
         "command": "git.merge"
     },
-
     ////////////////////////////////////////////////////////////////////////////
     // remote ssh
     ////////////////////////////////////////////////////////////////////////////
@@ -266,17 +303,17 @@
     },
     {
         "key": "ctrl+shift+r q",
-        "command": "remote-containers.reopenInSSH"
+        "command": "remote-containers.reopenLocally",
+        "when": "hasRemoteServer"
     },
     {
-        "key": "ctrl+shift+r q",
-        "command": "remote-containers.reopenLocally"
+        "key": "ctrl+shift+r ctrl+shift+q",
+        "command": "remote-containers.reopenInSSH",
+        "when": "hasRemoteServer"
     },
-
     ////////////////////////////////////////////////////////////////////////////
     // debug
     ////////////////////////////////////////////////////////////////////////////
-
     // python
     {
         "key": "ctrl+h ctrl+h",
@@ -302,7 +339,6 @@
         "key": "ctrl+h r",
         "command": "jupyter.restartkernel"
     },
-
     // typescript
     {
         "key": "ctrl+h ctrl+h",
@@ -314,7 +350,6 @@
         "command": "quokka.makeQuokkaFromExistingFile",
         "when": "editorLangId == 'typescript'"
     },
-
     // php
     {
         "key": "ctrl+h ctrl+h",
@@ -326,7 +361,12 @@
         "command": "workbench.action.debug.stepInto",
         "when": "inDebugMode && editorLangId == 'php'"
     },
-
+    // snowflake
+    {
+        "key": "ctrl+h ctrl+h",
+        "command": "snowflake.executeStatements",
+        "when": "editorTextFocus && !notebookCellListFocused && editorLangId == 'snowflake-sql'"
+    },
     ////////////////////////////////////////////////////////////////////////////
     // disable default keybindings
     ////////////////////////////////////////////////////////////////////////////
@@ -904,4 +944,14 @@
         "command": "-search.searchEditor.action.deleteFileResults",
         "when": "inSearchEditor"
     },
+    {
+        "key": "ctrl+enter",
+        "command": "-snowflake.executeStatements",
+        "when": "editorTextFocus && !notebookCellListFocused && editorLangId == 'snowflake-sql'"
+    },
+    {
+        "key": "shift+alt+f",
+        "command": "-editor.action.formatDocument",
+        "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+    }
 ]
