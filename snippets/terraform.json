@@ -1,4 +1,44 @@
 {
+    "output": {
+        "prefix": ["output", "print"],
+        "body": [
+            "output \"${1:sample}\" {",
+            "\tdescription = \"${3:<description>}\"",
+            "\tvalue       = \"${2:<resource>}\"",
+            "}"
+        ]
+    },
+    "variable": {
+        "prefix": "variable",
+        "body": [
+            "variable \"${1:sample}\" {",
+            "\tdefault     = \"${2:<default>}\"",
+            "\tdescription = \"${3:<description>}\"",
+            "}"
+        ]
+    },
+    "dynamic": {
+        "prefix": "dynamic",
+        "body": [
+            "dynamic \"${1:block}\" {",
+            "\tfor_each = ${2:<condition>} ? [true] : []",
+            "\tcontent {",
+            "\t\t${3:<contents>}",
+            "\t}",
+            "}"
+        ]
+    },
+    "local-exec": {
+        "prefix": "local-exec",
+        "body": [
+            "resource \"null_resource\" \"${1:sample}\" {",
+            "\tprovisioner \"local-exec\" {",
+            "\t\tcommand = \"${2:<command>}\"",
+            "\t}",
+            "}"
+        ]
+    },
+
     // BaseSettings
     "default_setting": {
         "prefix": "default_setting",
@@ -16,10 +56,37 @@
             "  region  = <region>",
             "  profile = \"terraform\"",
             "}",
-            "",
-            "# AWSの情報",
-            "data \"aws_caller_identity\" \"current\" {}",
-            "data \"aws_availability_zones\" \"available\" {}"
+        ]
+    },
+    // Data Source
+    "data source(identity)": {
+        "prefix": "data_identity",
+        "body": [
+            "data \"aws_caller_identity\" \"current\" {}"
+        ]
+    },
+    "data source(s3_bucket)": {
+        "prefix": "data_s3",
+        "body": [
+            "data \"aws_s3_bucket\" \"${1:sample}\" {",
+            "\tbucket = \"${2:bucket_name}\"",
+            "}"
+        ]
+    },
+    "data source(ssm_parameter)": {
+        "prefix": "data_ssm_parameter",
+        "body": [
+            "data \"aws_ssm_parameter\" \"${1:sample}\" {",
+            "\tname = \"${2:parameter_path}\"",
+            "}"
+        ]
+    },
+    "data source(vpc)": {
+        "prefix": "data_vpc",
+        "body": [
+            "data \"aws_vpc\" \"${1:sample}\" {",
+            "\tid = \"${2:vpc_id}\"",
+            "}"
         ]
     },
 
@@ -27,16 +94,15 @@
     "module": {
         "prefix": "module",
         "body": [
-            "module \"${1:module_name}\" {",
-            "\tsource     = \"./modules/${1:module_name}\"",
-            "\taccount_id = data.aws_caller_identity.current.account_id",
+            "module \"${1:sample}\" {",
+            "\tsource     = \"${2:module_path}\"",
             "}"
         ]
     },
 
-    // IAMRole
-    "ResourceRole": {
-        "prefix": "resource_role",
+    // IAM
+    "Role": {
+        "prefix": "role",
         "body": [
             "resource \"aws_iam_role\" \"${1:sample}\" {",
             "\tname = \"${1:sample}\"",
@@ -44,12 +110,53 @@
             "\t\t${path.module}/assets/templates/assume_role_policy.tpl",
             "\t\t{principal = \"ecs-tasks.amazonaws.com\"}",
             "\t)",
-            "\tmanaged_policy_arns = []",
             "}"
         ]
     },
-
-    // IAMPolicy
+    "Policy": {
+        "prefix": "policy",
+        "body": [
+            "resource \"aws_iam_policy\" \"${1:sample}\" {",
+            "\tname   = \"${1:sample}\"",
+            "\tpolicy = data.aws_iam_policy_document.${1:sample}.json",
+            "}",
+        ]
+    },
+    "PolicyDocument": {
+        "prefix": "policy",
+        "body": [
+            "data \"aws_iam_policy_document\" \"${1:sample}\" {",
+            "\tstatement {",
+            "\t\teffect    = \"Allow\"",
+            "\t\tactions   = [\"*\"]",
+            "\t\tresources = [\"*\"]",
+            "\t}",
+            "}",
+        ]
+    },
+    "PolicyDocument(Rich)": {
+        "prefix": "policydoc(rich)",
+        "body": [
+            "data \"aws_iam_policy_document\" \"${1:sample}\" {",
+            "\tstatement {",
+            "\t\tsid       = \"${1:sample}\"",
+            "\t\teffect    = \"Allow\"",
+            "\t\tactions   = [\"*\"]",
+            "\t\tresources = [\"*\"]",
+            "\t\tprincipals {",
+            "\t\t\ttype        = \"*\"",
+            "\t\t\tidentifiers = [\"*\"]",
+            "\t\t}",
+            "",
+            "\t\tcondition {",
+            "\t\t\ttest     = \"${2|StringEquals,StringLike,IpAddress,NumericEquals,NumericGreaterThan,NumericLessThan,Bool,ArnEquals,ArnLike|}\"",
+            "\t\t\tvariable = \"\"",
+            "\t\t\tvalues   = []",
+            "\t\t}",
+            "\t}",
+            "}",
+        ]
+    },
     "AssumeRolePolicy": {
         "prefix": "assume_role_policy",
         "body": [
@@ -57,33 +164,13 @@
             "\t\"Version\": \"2012-10-17\"",
             "\t\"Statement\": [",
             "\t\t{",
+            "\t\t\t\"Effect\": \"Allow\"",
             "\t\t\t\"Action\": \"sts:AssumeRole\"",
             "\t\t\t\"Principal\": {",
             "\t\t\t\t\"Service\": \"${principal}\"",
             "\t\t\t}",
-            "\t\t\t\"Effect\": \"Allow\"",
             "\t\t}",
             "\t]",
-            "}"
-        ]
-    },
-    "PolicyTemplate": {
-        "prefix": "policy_template",
-        "body": [
-            "resource \"aws_iam_policy\" \"${1:sample}\" {",
-            "\tname = \"${1:sample}\"",
-            "\tpolicy = jsonencode(",
-            "\t\t{",
-            "\t\t\t\"Version\" = \"2012-10-17\",",
-            "\t\t\t\"Statement\" = [",
-            "\t\t\t\t{",
-            "\t\t\t\t\tEffect   = \"Allow\"",
-            "\t\t\t\t\tAction   = \"<Action>\"",
-            "\t\t\t\t\tResource = \"*\"",
-            "\t\t\t\t}",
-            "\t\t\t]",
-            "\t\t}",
-            "\t)",
             "}"
         ]
     },
@@ -92,8 +179,8 @@
     "VPC": {
         "prefix": "vpc",
         "body": [
-            "resource \"aws_vpc\" \"main\" {",
-            "\tcidr_block = var.cidr_block",
+            "resource \"aws_vpc\" \"${1:sample}\" {",
+            "\tcidr_block = ${2:<cidr_block>}",
             "}"
         ]
     },
@@ -192,17 +279,22 @@
         "body": [
             "resource \"aws_security_group\" \"${1:sample}\" {",
             "\tname   = \"${1:sample}\"",
-            "\tvpc_id = var.vpc_id",
-            "}",
+            "\tvpc_id = ${2:vpc_id}",
             "",
-            "resource \"aws_security_group_rule\" \"${2|egress,ingress|}\" {",
-            "\tsecurity_group_id = aws_security_group.main.id",
-            "\ttype              = \"${2|egress,ingress|}\"",
-            "\tfrom_port         = 0",
-            "\tto_port           = 0",
-            "\tprotocol          = \"${3|-1,tcp,http,https|}\"",
-            "\tcidr_blocks       = [\"0.0.0.0/0\"]",
-            "}"
+            "\tingress {",
+            "\t\tfrom_port       = 80",
+            "\t\tto_port         = 80",
+            "\t\tprotocol        = \"${4|tcp,http,https|}\"",
+            "\t\tcidr_blocks     = [${3:<cidr_block>}]",
+            "\t}",
+            "",
+            "\tegress {",
+            "\t\tfrom_port         = 0",
+            "\t\tto_port           = 0",
+            "\t\tprotocol          = \"-1\"",
+            "\t\tcidr_blocks       = [\"0.0.0.0/0\"]",
+            "\t}",
+            "}",
         ]
     },
 
