@@ -1,33 +1,4 @@
 {
-	"snippet": {
-		"prefix": "snippet",
-		"body": [
-			"\"${1:name}\": {",
-			"\t\"prefix\": \"${2:prefix}\",",
-			"\t\"body\": [",
-			"\t\t\"$3\"",
-			"\t]",
-			"}"
-		]
-	},
-	"selectedtext": {
-		"prefix": "tm_selected_text",
-		"body": [
-			"\\${TM_SELECTED_TEXT}"
-		]
-	},
-	"current line": {
-		"prefix": "tm_current_line",
-		"body": [
-			"\\${TM_CURRENT_LINE}"
-		]
-	},
-	"clipboard": {
-		"prefix": "clipboard",
-		"body": [
-			"\\${CLIPBOARD}"
-		]
-	},
 	// vscode extentions for devcontainer.json
 	"vscode_extentions": {
 		"prefix": "vscode_extentions",

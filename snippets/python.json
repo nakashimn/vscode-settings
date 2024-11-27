@@ -121,6 +121,14 @@
 			"from mypy_boto3_ecs import ECSClient"
 		]
 	},
+	"import requests": {
+		"prefix": "import requests",
+		"body": [
+			"import json",
+			"import requests",
+			"from requests import Response"
+		]
+	},
 
 	// Logger
 

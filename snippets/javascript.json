@@ -11,14 +11,31 @@
 			"document.getElementById(\"${1:id}\").innerHTML = \"$2\";"
 		]
 	},
+	"class": {
+		"prefix": "class",
+		"body": [
+			"class ${1:ClassName} {",
+			"\tconstructor() {",
+			"\t\t$2",
+			"\t}",
+ 			"}"
+		]
+	},
 	"function": {
 		"prefix": "function",
 		"body": [
-			"function ${1:FunctionName}(${2:args}){",
+			"function ${1:FunctionName}(${2:args}) {",
 			"$3",
  			"}"
 		]
 	},
+	"trim": {
+		"prefix": ["replace", "trim"],
+		"body": [
+			"$0.replace(/\\s+/g, '');",
+		]
+	},
+	// template
 	"WebRTC": {
 		"prefix": "webrtc.StartCamera",
 		"body": [
@@ -33,5 +50,18 @@
 			"\t})",
 			"}"
 		]
-	}
+	},
+	// jsdoc
+	"jsdoc": {
+		"prefix": "jsdoc",
+		"body": [
+			"/**",
+			" * @function",
+			" * @param {${1|number,string,boolean,Object|}} args",
+			" * @return {${2|number,string,boolean,Object|}}",
+			" * @description",
+			" */"
+		]
+	},
+
 }

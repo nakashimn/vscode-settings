@@ -1,23 +1,22 @@
 {
 	"requests.get": {
 		"scope": "python",
-		"prefix": "req_get",
+		"prefix": "get",
 		"body": [
-			"r: Response = requests.get(f\"${1:URL}\")",
-			"ret: dict[str, Any] = json.loads(r.text)"
+			"res: Response = requests.get(f\"${1:URL}\")",
+			"ret: dict[str, Any] = json.loads(res.text)"
 		]
 	},
 	"requests.post": {
 		"scope": "python",
-		"prefix": "req_post",
+		"prefix": "post",
 		"body": [
-			"r: Response = requests.post(",
+			"res: Response = requests.post(",
 			"\tf\"${1:URL}\",",
-			"\tjson={",
-			"\t\t\"id\": 0",
-			"\t}",
+			"\theaders={\"Content-Type\": \"application/json\"},",
+			"\tjson={\"id\": 0}",
 			")",
-			"ret: dict[str, Any] = json.loads(r.text)"
+			"ret: dict[str, Any] = json.loads(res.text)"
 		]
 	},
 }

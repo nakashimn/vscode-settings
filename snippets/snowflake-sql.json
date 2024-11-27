@@ -2,7 +2,7 @@
 	"type": {
 		"prefix": "type",
 		"body": [
-			"${1|NUMBER(38, 0),VARCHAR(16777216),BOOLEAN,DATE,DATETIME,TIME|}"
+			"${1|NUMBER(38\\, 0),VARCHAR(16777216),BOOLEAN,DATE,DATETIME,TIME|}"
 		]
 	},
 	// shortcut
@@ -391,15 +391,33 @@
 
 	// debug
 	"describe_table": {
-		"prefix": "describe_table",
+		"prefix": ["describe_table", "dt", "desct"],
 		"body": [
 			"DESCRIBE TABLE ${1:<TABLENAME>};"
 		]
 	},
 	"describe_view": {
-		"prefix": "describe_view",
+		"prefix": ["describe_view", "dv", "descv"],
 		"body": [
 			"DESCRIBE VIEW ${1:<VIEWNAME>};"
+		]
+	},
+	"show users": {
+		"prefix": ["show_users", "su", "showu"],
+		"body": [
+			"SHOW USERS;"
+		]
+	},
+	"show roles": {
+		"prefix": ["show_roles", "sr", "showr"],
+		"body": [
+			"SHOW ROLES;"
+		]
+	},
+	"show grants": {
+		"prefix": ["show_grants", "sg", "showg"],
+		"body": [
+			"SHOW GRANTS oN SCHEMA ${1:<SCHEMA>};"
 		]
 	},
 	"show columns": {
@@ -409,9 +427,15 @@
 		]
 	},
 	"duplicated": {
-		"prefix": ["count_unique", "duplicated"],
+		"prefix": ["count_unique", "unique", "duplicated"],
 		"body": [
 			"SELECT ${2:<VALUE>}, COUNT(*) FROM ${1:<TABLE>} GROUP BY ALL ORDER BY COUNT(*) DESC;"
+		]
+	},
+	"get_ddl": {
+		"prefix": ["get_ddl", "ddl"],
+		"body": [
+			"SELECT GET_DDL('table', '${1:<TABLE>}');"
 		]
 	},
 	// system

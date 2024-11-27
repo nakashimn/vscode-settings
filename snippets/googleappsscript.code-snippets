@@ -1,0 +1,84 @@
+{
+	"log(GAS)": {
+		"scope": "javascript",
+		"prefix": ["log", "print"],
+		"body": [
+			"Logger.log($0)"
+		]
+	},
+	"try": {
+		"scope": "javascript",
+		"prefix": "try",
+		"body": [
+			"try {",
+			"\t$0",
+			"} catch(e) {",
+			"\tthrow e;",
+			"}"
+		]
+	},
+	"scriptId": {
+		"scope": "javascript",
+		"prefix": "scriptId",
+		"body": [
+			"const scriptId = ScriptApp.getScriptId();"
+		]
+	},
+	"scriptName": {
+		"scope": "javascript",
+		"prefix": "scriptName",
+		"body": [
+			"const scriptName = DriveApp.getFileById(ScriptApp.getScriptId()).getName();"
+		]
+	},
+	"jsonToStr": {
+		"scope": "javascript",
+		"prefix": "jsonToStr",
+		"body": [
+			"JSON.stringify(${TM_SELECTED_TEXT}$0)"
+		]
+	},
+	"get": {
+		"scope": "javascript",
+		"prefix": "fetch",
+		"body": [
+			"const options = {",
+			"\t'method': '${1|get,post|}',",
+			"\t'headers': {}",
+			"\t'payload': JSON.stringify(${2:payload})",
+			"};",
+			"const response = UrlFetchApp.fetch(${3:url}, options);",
+			"const responseCode = response.getResponseCode();",
+			"const responseText = response.getContentText();"
+		]
+	},
+	// template
+	"getTimestamp": {
+		"scope": "javascript",
+		"prefix": "getTimestamp",
+		"body": [
+			"_getTimestamp() {",
+			"\tconst currentTimestamp = new Date();",
+			"\tconst currentDate = Utilities.formatDate(currentTimestamp, 'UTC', 'yyyy-MM-dd');",
+			"\tconst currentTime = Utilities.formatDate(currentTimestamp, 'UTC', 'HH:mm:ss');",
+			"\treturn `\\${currentDate}T\\${currentTime}Z`;",
+			"}"
+		]
+	},
+	"generateRandomId": {
+		"scope": "javascript",
+		"prefix": "getTimestamp",
+		"body": [
+			"_generateRandomId(length=16) {",
+			"\tconst characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';",
+			"",
+			"\tvar randomId = '';",
+			"\tfor (var i = 0; i < length; i++) {",
+			"\t\trandomId += characters[Math.floor(Math.random()*characters.length)];",
+			"\t}",
+			"\treturn randomId;",
+			"}"
+		]
+	},
+
+}

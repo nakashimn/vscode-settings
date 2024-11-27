@@ -1,0 +1,35 @@
+{
+	"snippet": {
+		"scope": "snippets",
+		"prefix": "snippet",
+		"body": [
+			"\"${1:name}\": {",
+			"\t\"prefix\": \"${2:prefix}\",",
+			"\t\"body\": [",
+			"\t\t\"$3\"",
+			"\t]",
+			"}"
+		]
+	},
+	"selectedtext": {
+		"scope": "snippets",
+		"prefix": "tm_selected_text",
+		"body": [
+			"\\${TM_SELECTED_TEXT}"
+		]
+	},
+	"current line": {
+		"scope": "snippets",
+		"prefix": "tm_current_line",
+		"body": [
+			"\\${TM_CURRENT_LINE}"
+		]
+	},
+	"clipboard": {
+		"scope": "snippets",
+		"prefix": "clipboard",
+		"body": [
+			"\\${CLIPBOARD}"
+		]
+	},
+}
