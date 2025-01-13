@@ -417,7 +417,7 @@
 	"show grants": {
 		"prefix": ["show_grants", "sg", "showg"],
 		"body": [
-			"SHOW GRANTS oN SCHEMA ${1:<SCHEMA>};"
+			"SHOW GRANTS ON SCHEMA ${1:<SCHEMA>};"
 		]
 	},
 	"show columns": {
