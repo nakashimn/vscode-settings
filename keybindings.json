@@ -133,13 +133,13 @@
         "when": "!editorIsOpen"
     },
     {
-        "key": "ctrl+m",
-        "command": "markdown.showPreviewToSide",
+        "key": "ctrl+shift+m m",
+        "command": "markdown-preview-enhanced.openPreviewToTheSide",
         "when": "editorLangId == 'markdown'"
     },
     {
-        "key": "ctrl+shift+m m",
-        "command": "markdown-preview-enhanced.openPreviewToTheSide",
+        "key": "ctrl+shift+m s",
+        "command": "markdown.showPreviewToSide",
         "when": "editorLangId == 'markdown'"
     },
     {
