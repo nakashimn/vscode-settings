@@ -137,13 +137,16 @@
 		"body":[
 			"from logging import getLogger, Logger, Formatter, Handler, StreamHandler, DEBUG",
 			"from pythonjsonlogger.jsonlogger import JsonFormatter",
-			"default_logger: Logger = getLogger(__name__)",
-			"formatter: Formatter = JsonFormatter(\"%(levelname)s %(module)s %(funcName)s %(message)s\")",
+			"logger: Logger = getLogger(__name__)",
+			"formatter: Formatter = JsonFormatter(",
+			"\t\"%(levelname)s %(module)s %(funcName)s %(message)s\",",
+			"\trename_fields={\"levelname\": \"status\"}",
+			")",
 			"handler: Handler = StreamHandler()",
 			"handler.setFormatter(formatter)",
-			"default_logger.addHandler(handler)",
-			"default_logger.setLevel(DEBUG)",
-			"default_logger.propagate = False"
+			"logger.addHandler(handler)",
+			"logger.setLevel(DEBUG)",
+			"logger.propagate = False"
 		]
 	},
 	"NullLogger": {
@@ -152,7 +155,10 @@
 			"from logging import getLogger, Logger, Formatter, Handler, NullHandler",
 			"from pythonjsonlogger.jsonlogger import JsonFormatter",
 			"null_logger: Logger = getLogger(__name__)",
-			"formatter: Formatter = JsonFormatter(\"%(levelname)s %(module)s %(funcName)s %(message)s\")",
+			"formatter: Formatter = JsonFormatter(",
+			"\t\"%(levelname)s %(module)s %(funcName)s %(message)s\",",
+			"\trename_fields={\"levelname\": \"status\"}",
+			")",
 			"handler: Handler = NullHandler()",
 			"handler.setFormatter(formatter)",
 			"null_logger.addHandler(handler)",
@@ -179,7 +185,10 @@
 		"prefix": "formatter_(json)",
 		"body": [
 			"from pythonjsonlogger.jsonlogger import JsonFormatter",
-			"formatter: Formatter = JsonFormatter(\"%(asctime)s %(levelname)s %(module)s %(funcName)s %(message)s\")"
+			"formatter: Formatter = JsonFormatter(",
+			"\t\"%(levelname)s %(module)s %(funcName)s %(message)s\",",
+			"\trename_fields={\"levelname\": \"status\"}",
+			")",
 		]
 	},
 	"warning(traceback)": {
