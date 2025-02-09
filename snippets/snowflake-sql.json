@@ -390,18 +390,6 @@
 	},
 
 	// debug
-	"describe_table": {
-		"prefix": ["describe_table", "dt", "desct"],
-		"body": [
-			"DESCRIBE TABLE ${1:<TABLENAME>};"
-		]
-	},
-	"describe_view": {
-		"prefix": ["describe_view", "dv", "descv"],
-		"body": [
-			"DESCRIBE VIEW ${1:<VIEWNAME>};"
-		]
-	},
 	"show users": {
 		"prefix": ["show_users", "su", "showu"],
 		"body": [
@@ -414,16 +402,48 @@
 			"SHOW ROLES;"
 		]
 	},
-	"show grants": {
-		"prefix": ["show_grants", "sg", "showg"],
+	"show grants on": {
+		"prefix": ["show_grants_on", "sgo", "showgo"],
+		"describe": "Objectに対して誰が何の権限を有するかを表示する",
 		"body": [
-			"SHOW GRANTS ON SCHEMA ${1:<SCHEMA>};"
+			"SHOW GRANTS ON ${1|SCHEMA,TABLE,ROLE|} ${1:<OBJECT>};"
+		]
+	},
+	"show grants to": {
+		"prefix": ["show_grants_to", "sgt", "showgt"],
+		"describe": "ROLE/USERがどこに何の権限を有するかを表示する",
+		"body": [
+			"SHOW GRANTS TO ${1|ROLE,USER|} ${1:<NAME>};"
 		]
 	},
 	"show columns": {
 		"prefix": ["show_columns", "sc", "showc"],
 		"body": [
 			"SHOW COLUMNS IN ${1:<TABLE>};"
+		]
+	},
+	"describe_table": {
+		"prefix": ["describe_table", "dt", "desct"],
+		"body": [
+			"DESCRIBE TABLE ${1:<TABLE>};"
+		]
+	},
+	"describe_view": {
+		"prefix": ["describe_view", "dv", "descv"],
+		"body": [
+			"DESCRIBE VIEW ${1:<VIEW>};"
+		]
+	},
+	"describe_user": {
+		"prefix": ["describe_user", "du", "descu"],
+		"body": [
+			"DESCRIBE USER ${1:<USER>};"
+		]
+	},
+	"describe_role": {
+		"prefix": ["describe_role", "dr", "descr"],
+		"body": [
+			"DESCRIBE ROLE ${1:<ROLE>};"
 		]
 	},
 	"duplicated": {
