@@ -300,6 +300,33 @@
         "command": "git.pushTags"
     },
     ////////////////////////////////////////////////////////////////////////////
+    // github copilot
+    ////////////////////////////////////////////////////////////////////////////
+    {
+        "key": "ctrl+tab",
+        "command": "editor.action.inlineSuggest.trigger",
+        "when": "editorTextFocus && !editorHasSelection && !inlineSuggestionsVisible"
+    },
+    {
+        "key": "ctrl+oem_102",
+        "command": "github.copilot.terminal.attachTerminalSelection"
+    },
+    {
+        "key": "ctrl+oem_102",
+        "command": "workbench.action.closeAuxiliaryBar",
+        "when": "auxiliaryBarVisible"
+    },
+    {
+        "key": "ctrl+shift+oem_102 e",
+        "command": "workbench.action.chat.newEditSession",
+        "when": "chatEditingParticipantRegistered && chatIsEnabled"
+    },
+    {
+        "key": "ctrl+shift+oem_102 n",
+        "command": "workbench.action.chat.newChat",
+        "when": "chatIsEnabled && chatLocation != 'editing-session'"
+    },
+    ////////////////////////////////////////////////////////////////////////////
     // remote ssh
     ////////////////////////////////////////////////////////////////////////////
     {
@@ -974,5 +1001,30 @@
     {
         "key": "alt+h",
         "command": "-git.viewFileHistory"
+    },
+    {
+        "key": "alt+oem_5",
+        "command": "-editor.action.inlineSuggest.trigger",
+        "when": "config.github.copilot.inlineSuggest.enable && editorTextFocus && !editorHasSelection && !inlineSuggestionsVisible"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "-workbench.action.quickOpenNavigateNextInEditorPicker",
+        "when": "inEditorsPicker && inQuickOpen"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+        "when": "!activeEditorGroupEmpty"
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "-workbench.action.chat.openEditSession",
+        "when": "chatEditingParticipantRegistered && view != 'workbench.panel.chat.view.edits'"
+    },
+    {
+        "key": "ctrl+oem_2",
+        "command": "-editor.action.accessibleViewAcceptInlineCompletion",
+        "when": "accessibleViewIsShown && accessibleViewCurrentProviderId == 'inlineCompletions'"
     }
 ]
