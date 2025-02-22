@@ -256,6 +256,11 @@
     // git
     ////////////////////////////////////////////////////////////////////////////
     {
+        "key": "ctrl+g",
+        "command": "workbench.view.scm",
+        "when": "workbench.scm.active"
+    },
+    {
         "key": "ctrl+shift+g ctrl+g",
         "command": "workbench.view.extension.gitlens"
     },
@@ -1026,5 +1031,14 @@
         "key": "ctrl+oem_2",
         "command": "-editor.action.accessibleViewAcceptInlineCompletion",
         "when": "accessibleViewIsShown && accessibleViewCurrentProviderId == 'inlineCompletions'"
+    },
+    {
+        "key": "ctrl+g",
+        "command": "-workbench.action.terminal.goToRecentDirectory",
+        "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
+    },
+    {
+        "key": "ctrl+g",
+        "command": "-workbench.action.gotoLine"
     }
 ]
