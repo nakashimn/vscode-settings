@@ -404,16 +404,16 @@
 	},
 	"show grants on": {
 		"prefix": ["show_grants_on", "sgo", "showgo"],
-		"describe": "Objectに対して誰が何の権限を有するかを表示する",
+		"description": "Objectに対して誰が何の権限を有するかを表示する",
 		"body": [
-			"SHOW GRANTS ON ${1|SCHEMA,TABLE,ROLE|} ${1:<OBJECT>};"
+			"SHOW GRANTS ON ${1|SCHEMA,TABLE,ROLE|} ${2:<OBJECT>};"
 		]
 	},
 	"show grants to": {
 		"prefix": ["show_grants_to", "sgt", "showgt"],
-		"describe": "ROLE/USERがどこに何の権限を有するかを表示する",
+		"description": "ROLE/USERがどこに何の権限を有するかを表示する",
 		"body": [
-			"SHOW GRANTS TO ${1|ROLE,USER|} ${1:<NAME>};"
+			"SHOW GRANTS TO ${1|ROLE,USER|} ${2:<NAME>};"
 		]
 	},
 	"show columns": {
