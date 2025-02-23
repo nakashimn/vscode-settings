@@ -6,9 +6,15 @@
     // dev containers
     "dev.containers.executeInWSL": true,
     "dev.containers.defaultExtensions": [
+        "digoro.clipboard",
         "donjayamanne.githistory",
         "eamodio.gitlens",
-        "ryuta46.multi-command"
+        "gera2ld.markmap-vscode",
+        "github.copilot",
+        "ionutvmi.path-autocomplete",
+        "mhutchie.git-graph",
+        "ryuta46.multi-command",
+        "shd101wyy.markdown-preview-enhanced"
     ],
 
     // editor
@@ -26,7 +32,8 @@
 
     // files
     "files.associations": {
-        "*.gs": "javascript"
+        "*.gs": "javascript",
+        "*.sql": "snowflake-sql"
     },
     "files.encoding": "utf8",
     "files.eol": "\n",
