@@ -38,7 +38,7 @@
 			"FROM python:3.12",
 			"",
 			"ADD requirements.txt /",
-			"RUN pip install --no-cache-dir -r requirements.txt"
+			"RUN pip install --no-cache-dir --break-system-packages -r requirements.txt"
 		]
 	},
 
@@ -47,7 +47,7 @@
 		"prefix": "install python",
 		"body": [
 			"COPY requirements.txt /tmp/",
-			"RUN pip install --no-cache-dir -r /tmp/requirements.txt \\",
+			"RUN pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt \\",
 			"\t&& rm /tmp/requirements.txt"
 		]
 	},
@@ -58,7 +58,7 @@
 			"\t&& apt-get install -y build-essential git python python3-pip",
 			"",
 			"COPY requirements.txt /tmp/",
-			"RUN pip install --no-cache-dir -r /tmp/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html \\",
+			"RUN pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html \\",
 			"\t&& rm /tmp/requirements.txt"
 		]
 	},
@@ -69,7 +69,7 @@
 			"\t&& apt-get install -y build-essential git python python3-pip",
 			"",
 			"COPY requirements.txt /tmp/",
-			"RUN pip install --no-cache-dir -r /tmp/requirements.txt \\",
+			"RUN pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt \\",
 			"\t&& rm /tmp/requirements.txt"
 		]
 	},
