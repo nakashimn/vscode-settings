@@ -9,72 +9,58 @@
 	"SELECT": {
 		"prefix": ["SELECT", "sl"],
 		"body": [
-			"SELECT",
-			"\t$0"
+			"SELECT"
 		]
 	},
 	"FROM": {
 		"prefix": ["FROM", "fm"],
 		"body": [
-			"FROM",
-			"\t$0"
+			"FROM"
 		]
 	},
 	"WHERE": {
 		"prefix": ["WHERE", "wh"],
 		"body": [
-			"WHERE",
-			"\t$0"
+			"WHERE"
 		]
 	},
 	"OR": {
-		"prefix": ["OR"],
+		"prefix": ["OR", "or"],
 		"body": [
-			"OR",
-			"\t$0"
+			"OR"
 		]
 	},
 	"AND": {
 		"prefix": ["AND", "an"],
 		"body": [
-			"AND",
-			"\t$0"
+			"AND"
 		]
 	},
 	"ORDER BY": {
 		"prefix": ["ORDER BY", "od"],
 		"body": [
-			"ORDER BY",
-			"\t$0"
+			"ORDER BY"
 		]
 	},
 	"GROUP BY": {
 		"prefix": ["GROUP BY", "gp"],
 		"body": [
-			"GROUP BY",
-			"\t${1:ALL}"
+			"GROUP BY ALL"
 		]
 	},
 	"WITH": {
-		"prefix": "WITH",
+		"prefix": ["WITH", "wi"],
 		"body": [
 			"WITH",
-			"${1:<CTE>} AS (",
-			"\tSELECT $0",
-			")",
-			"SELECT",
-			"\t*",
-			"FROM",
-			"\t${1:<CTE>}",
-			";"
+			"${1:tmp} AS ("
 		]
 	},
 	"CASE": {
 		"prefix": ["CASE", "ca"],
 		"body": [
 			"CASE",
-			"\tWHEN ${1:<COND>} THEN ${2:<VALUE>}",
-			"\tELSE ${3:<VALUE>}",
+			"\tWHEN ${1:<cond>} THEN ${2:<value>}",
+			"\tELSE ${3:<value>}",
 			"END"
 		]
 	},
