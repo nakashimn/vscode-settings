@@ -7,45 +7,111 @@
 	},
 	// shortcut
 	"SELECT": {
-		"prefix": ["SELECT", "sl"],
+		"prefix": ["SELECT", "sel.", "sl."],
 		"body": [
-			"SELECT"
+			"SELECT "
 		]
 	},
 	"FROM": {
-		"prefix": ["FROM", "fm"],
+		"prefix": ["FROM", "from.", "fm."],
 		"body": [
-			"FROM"
+			"FROM "
 		]
 	},
 	"WHERE": {
-		"prefix": ["WHERE", "wh"],
+		"prefix": ["WHERE", "whe.", "wh."],
 		"body": [
-			"WHERE"
+			"WHERE "
 		]
 	},
 	"OR": {
-		"prefix": ["OR", "or"],
+		"prefix": ["OR", "or."],
 		"body": [
-			"OR"
+			"OR "
 		]
 	},
 	"AND": {
-		"prefix": ["AND", "an"],
+		"prefix": ["AND", "and.", "an."],
 		"body": [
-			"AND"
+			"AND "
 		]
 	},
 	"ORDER BY": {
-		"prefix": ["ORDER BY", "od"],
+		"prefix": ["ORDER BY", "ord.", "od."],
 		"body": [
-			"ORDER BY"
+			"ORDER BY "
 		]
 	},
 	"GROUP BY": {
-		"prefix": ["GROUP BY", "gp"],
+		"prefix": ["GROUP BY", "gp."],
 		"body": [
 			"GROUP BY ALL"
+		]
+	},
+	"LIMIT": {
+		"prefix": ["LIMIT", "lim."],
+		"body": [
+			"LIMIT 10"
+		]
+	},
+	"COUNT": {
+		"prefix": ["COUNT", "cnt."],
+		"body": [
+			"COUNT($0)"
+		]
+	},
+	"MAX": {
+		"prefix": ["MAX", "max."],
+		"body": [
+			"MAX($0)"
+		]
+	},
+	"MIN": {
+		"prefix": ["MIN", "min."],
+		"body": [
+			"MIN($0)"
+		]
+	},
+	"SUM": {
+		"prefix": ["SUM", "sum."],
+		"body": [
+			"SUM($0)"
+		]
+	},
+	"MEDIAN": {
+		"prefix": ["MEDIAN", "med."],
+		"body": [
+			"MEDIAN($0)"
+		]
+	},
+	"MODE": {
+		"prefix": ["MODE", "mod."],
+		"body": [
+			"MODE($0)"
+		]
+	},
+	"AVERAGE": {
+		"prefix": ["AVG", "ave."],
+		"body": [
+			"AVG($0)"
+		]
+	},
+	"GREATEST": {
+		"prefix": ["GREATEST", "great.", "gre."],
+		"body": [
+			"GREATEST($0, 0)"
+		]
+	},
+	"DIV0NULL": {
+		"prefix": ["DIV0NULL", "div."],
+		"body": [
+			"DIV0NULL($0)"
+		]
+	},
+	"COALESCE": {
+		"prefix": ["COALESCE", "coal.", "coa."],
+		"body": [
+			"COALESCE($0, 0)"
 		]
 	},
 	"WITH": {
