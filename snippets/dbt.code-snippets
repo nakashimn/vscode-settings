@@ -1,0 +1,52 @@
+{
+	// commands
+	"dbt build": {
+		"scope": ["markdown", "snowflake-sql", "yaml"],
+		"prefix": ["dbt_build", "dbtb"],
+		"body": [
+			"dbt build ${1|--select ,--full-refresh ,--target |}"
+		]
+	},
+	"dbt external_sources": {
+		"scope": ["markdown", "snowflake-sql", "yaml"],
+		"prefix": ["dbt_ext", "dbtex"],
+		"body": [
+			"dbt run-operation stage_external_sources --vars \"ext_full_refresh: true\" --args \"select: $0\""
+		]
+	},
+	"dbt osmosis": {
+		"scope": ["markdown", "snowflake-sql", "yaml"],
+		"prefix": ["dbt_osmosis", "dbtos"],
+		"body": [
+			"dbt-osmosis yaml refactor --fqn $0 --force-inherit-descriptions --skip-add-tags"
+		]
+	},
+	// dbt yaml
+	"test not_null": {
+		"scope": ["yaml"],
+		"prefix": ["test_notnull", "notnull"],
+		"body": [
+			"tests:",
+			"- not_null"
+		]
+	},
+	"test unique": {
+		"scope": ["yaml"],
+		"prefix": ["test_unique", "unique"],
+		"body": [
+			"tests:",
+			"- unique"
+		]
+	},
+	"test unique(multi)": {
+		"scope": ["yaml"],
+		"prefix": ["test_unique_combi", "unique_combi"],
+		"body": [
+			"tests:",
+			"- dbt_utils.unique_combination_of_columns:",
+			"\tcombination_of_columns:",
+			"\t- ${1:col1}",
+			"\t- ${2:col2}",
+		]
+	},
+}

@@ -29,6 +29,8 @@
     "editor.minimap.size": "fit",
     "editor.renderWhitespace": "all",
     "editor.rulers": [80, 88],
+    "editor.snippetSuggestions": "top",
+    "editor.suggestOnTriggerCharacters": true,
 
     // files
     "files.associations": {
