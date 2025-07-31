@@ -49,4 +49,33 @@
 			"\t- ${2:col2}",
 		]
 	},
+	// templates
+	"config": {
+		"prefix": "config",
+		"body": [
+			"{{ config(",
+			"\tmaterialized='${1|incremental,table,view|}',",
+			"\tincremental_strategy='${2|merge,delete+insert,append|}',",
+			"\tunique_key='${3:<KEY>}'",
+			") }}"
+		]
+	},
+	"is_incremental": {
+		"prefix": "is_incremental",
+		"body": [
+			"{% if is_incremental() %}",
+			"$0",
+			"{% endif %}"
+		]
+	},
+	"macro_query": {
+		"prefix": "macro_query",
+		"body": [
+			"{% set query %}",
+			"\t$0",
+			"{% endset %}",
+			"{% set result = run_query(query) %}",
+			"{{ result.print_json() }}"
+		]
+	}
 }

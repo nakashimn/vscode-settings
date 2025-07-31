@@ -19,6 +19,7 @@
 
     // editor
     "editor.acceptSuggestionOnEnter": "off",
+    "editor.autoClosingBrackets": "never",
     "editor.autoClosingQuotes": "never",
     "editor.fontFamily": "Consolas, 'Courier New', monospace",
     "editor.glyphMargin": false,
@@ -27,6 +28,7 @@
     "editor.minimap.maxColumn": 40,
     "editor.minimap.renderCharacters": false,
     "editor.minimap.size": "fit",
+    "editor.quickSuggestionsDelay": 0,
     "editor.renderWhitespace": "all",
     "editor.rulers": [80, 88],
     "editor.snippetSuggestions": "top",

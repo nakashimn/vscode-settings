@@ -9,7 +9,7 @@
 	"SELECT": {
 		"prefix": ["SELECT", "sel", "sl"],
 		"body": [
-			"SELECT *"
+			"SELECT * "
 		]
 	},
 	"FROM": {
@@ -51,7 +51,13 @@
 	"LIMIT": {
 		"prefix": ["LIMIT", "lim"],
 		"body": [
-			"LIMIT 10"
+			"LIMIT 10;"
+		]
+	},
+	"DISTINCT": {
+		"prefix": ["DISTINCT", "dist"],
+		"body": [
+			"DISTINCT "
 		]
 	},
 	"COUNT": {
@@ -442,6 +448,18 @@
 	},
 
 	// debug
+	"sample": {
+		"prefix": ["sel*"],
+		"body": [
+			"SELECT * FROM $0 LIMIT 10;"
+		]
+	},
+	"count records": {
+		"prefix": ["cnt*"],
+		"body": [
+			"SELECT COUNT(*) FROM $0;"
+		]
+	},
 	"show users": {
 		"prefix": ["show_users", "su", "showu"],
 		"body": [
@@ -557,35 +575,6 @@
 		"prefix": "cancel_all_queries",
 		"body": [
 			"SELECT SYSTEM\\$CANCEL_ALL_QUERIES(${1:<SESSION_ID>});"
-		]
-	},
-	// dbt
-	"config": {
-		"prefix": "config",
-		"body": [
-			"{{ config(",
-			"\tmaterialized='${1|incremental,table,view|}',",
-			"\tincremental_strategy='${2|merge,delete+insert,append|}',",
-			"\tunique_key='${3:<KEY>}'",
-			") }}"
-		]
-	},
-	"is_incremental": {
-		"prefix": "is_incremental",
-		"body": [
-			"{% if is_incremental() %}",
-			"$0",
-			"{% endif %}"
-		]
-	},
-	"macro_query": {
-		"prefix": "macro_query",
-		"body": [
-			"{% set query %}",
-			"\t$0",
-			"{% endset %}",
-			"{% set result = run_query(query) %}",
-			"{{ result.print_json() }}"
 		]
 	}
 }
