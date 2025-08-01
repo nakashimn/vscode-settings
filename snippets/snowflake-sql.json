@@ -9,7 +9,7 @@
 	"SELECT": {
 		"prefix": ["SELECT", "sel", "sl"],
 		"body": [
-			"SELECT * "
+			"SELECT * FROM "
 		]
 	},
 	"FROM": {
@@ -52,6 +52,24 @@
 		"prefix": ["LIMIT", "lim"],
 		"body": [
 			"LIMIT 10;"
+		]
+	},
+	"IN": {
+		"prefix": ["IN", "in"],
+		"body": [
+			"IN ($0)"
+		]
+	},
+	"BETWEEN": {
+		"prefix": ["BETWEEN", "bet"],
+		"body": [
+			"BETWEEN $0 AND $1"
+		]
+	},
+	"LIKE": {
+		"prefix": ["LIKE", "like"],
+		"body": [
+			"LIKE "
 		]
 	},
 	"DISTINCT": {
@@ -115,7 +133,7 @@
 		]
 	},
 	"COALESCE": {
-		"prefix": ["COALESCE", "coal", "coa"],
+		"prefix": ["COALESCE", "coal"],
 		"body": [
 			"COALESCE($0, 0)"
 		]
@@ -130,14 +148,11 @@
 	"CASE": {
 		"prefix": ["CASE", "ca"],
 		"body": [
-			"CASE",
-			"\tWHEN ${1:<cond>} THEN ${2:<value>}",
-			"\tELSE ${3:<value>}",
-			"END"
+			"CASE WHEN ${1:<cond>} THEN 1 ELSE 0 END"
 		]
 	},
 	"INNER JOIN": {
-		"prefix": ["INNER JOIN", "ij"],
+		"prefix": ["INNER JOIN", "inner"],
 		"body": [
 			"INNER JOIN",
 			"\t$0",
@@ -145,7 +160,7 @@
 		]
 	},
 	"LEFT JOIN": {
-		"prefix": ["LEFT JOIN", "lj"],
+		"prefix": ["LEFT JOIN", "left"],
 		"body": [
 			"LEFT JOIN",
 			"\t$0",
@@ -153,7 +168,7 @@
 		]
 	},
 	"OUTER JOIN": {
-		"prefix": ["OUTER JOIN", "oj"],
+		"prefix": ["OUTER JOIN", "outer"],
 		"body": [
 			"FULL OUTER JOIN",
 			"\t$0",
