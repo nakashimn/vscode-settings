@@ -408,7 +408,7 @@
 		]
 	},
 	"tables_are_equal": {
-		"prefix": ["equal"],
+		"prefix": ["diff", "equal"],
 		"body": [
 			"WITH",
 			"ref AS (SELECT ${1:<cols>} FROM ${2:<ref>}),",
@@ -424,7 +424,7 @@
 		]
 	},
 	"tables_are_equal(hashagg)": {
-		"prefix": ["equal(hashagg)"],
+		"prefix": ["diff(hashagg)", "equal(hashagg)"],
 		"body": [
 			"WITH",
 			"ref AS (SELECT HASH_AGG(*) FROM ${1:<ref>}),",
