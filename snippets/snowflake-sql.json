@@ -255,21 +255,6 @@
 			";"
 		]
 	},
-	"upsert": {
-		"prefix": "upsert",
-		"body": [
-			"MERGE INTO ${1:<TARGET>} AS TARGET",
-			"\tUSING ${2:<SOURCE>} AS SOURCE",
-			"\tON TARGET.ID = SOURCE.ID",
-			"\tWHEN MATCHED THEN",
-			"\t\tUPDATE SET",
-			"\t\t\tTARGET.VALUE=SOURCE.VALUE",
-			"\tWHEN NOT MATCHED THEN",
-			"\t\tINSERT (ID, VALUE) VALUES (",
-			"\t\t\tSOURCE.ID, SOURCE.VALUE",
-			"\t\t);"
-		]
-	},
 	"random(uniform)": {
 		"prefix": "uniform",
 		"body": [
@@ -295,15 +280,6 @@
 		"prefix": "hash",
 		"body": [
 			"HASH_AGG(*)"
-		]
-	},
-	"create_table": {
-		"prefix": "create",
-		"body": [
-			"CREATE TABLE ${1:<TABLE>} (",
-			"\tID NUMBER NOT NULL PRIMARY KEY AUTOINCREMENT",
-			"\t, ${2:<KEY>} ${3|NUMBER(38\\, 0),VARCHAR(16777216),BOOLEAN,DATE,DATETIME,TIME|} ${4|NOT NULL,PRIMARY KEY,AUTOINCREMENT,DEFAULT VALUE|}",
-			");"
 		]
 	},
 	"add_column": {
@@ -407,15 +383,12 @@
 			"\t${1:<DB_NAME>}.INFORMATION_SCHEMA.COLUMNS",
 			"WHERE",
 			"\tTABLE_CATALOG = '${1:<DB_NAME>}'",
-			"AND",
-			"\tTABLE_SCHEMA = '${2:<SCHEMA_NAME>}'",
-			"AND",
-			"\tTABLE_NAME = '${3:<TABLE_NAME>}'",
-			";"
+			"\tAND TABLE_SCHEMA = '${2:<SCHEMA_NAME>}'",
+			"\tAND TABLE_NAME = '${3:<TABLE_NAME>}';"
 		]
 	},
 	"object_dependencies": {
-		"prefix": "object_dependencies",
+		"prefix": ["dependency", "object_dependencies"],
 		"body": [
 			"SELECT",
 			"\tREFERENCED_DATABASE,",
@@ -430,34 +403,33 @@
 			"\tSNOWFLAKE.ACCOUNT_USAGE.OBJECT_DEPENDENCIES",
 			"WHERE",
 			"\tREFERENCING_DATABASE = '${1:<DB_NAME>}'",
-			"AND",
-			"\tREFERENCING_SCHEMA = '${2:<SCHEMA_NAME>}'",
-			"AND",
-			"\tREFERENCING_OBJECT_NAME = '${3:<TABLE_NAME>}'",
-			";"
+			"\tAND REFERENCING_SCHEMA = '${2:<SCHEMA_NAME>}'",
+			"\tAND REFERENCING_OBJECT_NAME = '${3:<TABLE_NAME>}';"
 		]
 	},
 	"tables_are_equal": {
-		"prefix": "tables_are_equal",
+		"prefix": ["equal"],
 		"body": [
 			"WITH",
-			"ref AS (",
-			"\tSELECT",
-			"\t\tHASH_AGG(*)",
-			"\tFROM",
-			"\t\t<ref_table>",
-			"),",
-			"tgt AS (",
-			"\tSELECT",
-			"\t\tHASH_AGG(*)",
-			"\tFROM",
-			"\t\t<tgt_table>",
-			"),",
+			"ref AS (SELECT ${1:<cols>} FROM ${2:<ref>}),",
+			"tgt AS (SELECT ${1:<cols>} FROM ${3:<tgt>}),",
+			"ref_only AS (SELECT * FROM ref EXCEPT SELECT * FROM tgt),",
+			"tgt_only AS (SELECT * FROM tgt EXCEPT SELECT * FROM ref),",
 			"diff AS (",
-			"\tSELECT * FROM ref",
-			"\tEXCEPT",
-			"\tSELECT * FROM tgt",
+			"\tSELECT 'REF' AS ref_or_tgt, * FROM ref_only",
+			"\tUNION",
+			"\tSELECT 'TGT' AS ref_or_tgt, * FROM tgt_only",
 			")",
+			"SELECT * FROM diff ORDER BY ${1:<cols>} ref_or_tgt;"
+		]
+	},
+	"tables_are_equal(hashagg)": {
+		"prefix": ["equal(hashagg)"],
+		"body": [
+			"WITH",
+			"ref AS (SELECT HASH_AGG(*) FROM ${1:<ref>}),",
+			"tgt AS (SELECT HASH_AGG(*) FROM ${2:<tgt>}),",
+			"diff AS (SELECT * FROM ref EXCEPT SELECT * FROM tgt)",
 			"SELECT * FROM diff;"
 		]
 	},
