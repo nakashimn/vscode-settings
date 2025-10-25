@@ -248,6 +248,12 @@
 			")"
 		]
 	},
+	"create schema": {
+		"prefix": ["create_schema"],
+		"body": [
+			"CREATE SCHEMA ${1:<schema>};"
+		]
+	},
 	"clone table": {
 		"prefix": ["clone", "clone_table"],
 		"body": [
