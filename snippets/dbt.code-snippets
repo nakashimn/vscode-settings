@@ -2,14 +2,35 @@
 	// commands
 	"dbt build": {
 		"scope": ["markdown", "snowflake-sql", "yaml"],
-		"prefix": ["dbt_build", "dbtb"],
+		"prefix": ["dbt_build", "build", "bl"],
 		"body": [
-			"dbt build ${1|--select ,--full-refresh ,--target |}"
+			"dbt build --select $0"
+		]
+	},
+	"dbt build(full-refresh)": {
+		"scope": ["markdown", "snowflake-sql", "yaml"],
+		"prefix": ["dbt_build_fullrefresh", "fullrefresh", "blf"],
+		"body": [
+			"dbt build --select $0 --full-refresh"
+		]
+	},
+	"dbt build(args)": {
+		"scope": ["markdown", "snowflake-sql", "yaml"],
+		"prefix": ["dbt_build_args", "buildargs", "bla"],
+		"body": [
+			"dbt build --select $0 --args \"{${1:<key>}: ${2:<val>}}\""
+		]
+	},
+	"dbt build defer": {
+		"scope": ["markdown", "snowflake-sql", "yaml"],
+		"prefix": ["dbt_build_defer", "defer", "bldd"],
+		"body": [
+			"dbt build --select ${1:\"state:modified\"} --defer --state ${2:target}"
 		]
 	},
 	"dbt external_sources": {
 		"scope": ["markdown", "snowflake-sql", "yaml"],
-		"prefix": ["dbt_ext", "dbtex"],
+		"prefix": ["dbt_ext", "external", "dbtex"],
 		"body": [
 			"dbt run-operation stage_external_sources --vars \"ext_full_refresh: true\" --args \"select: $0\""
 		]
