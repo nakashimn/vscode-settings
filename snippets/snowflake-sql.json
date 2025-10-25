@@ -9,7 +9,7 @@
 	"SELECT": {
 		"prefix": ["SELECT", "sel", "sl"],
 		"body": [
-			"SELECT * FROM "
+			"SELECT * FROM $0;"
 		]
 	},
 	"FROM": {
@@ -49,7 +49,7 @@
 		]
 	},
 	"LIMIT": {
-		"prefix": ["LIMIT", "lim"],
+		"prefix": ["LIMIT", "lim", "lm"],
 		"body": [
 			"LIMIT 10;"
 		]
@@ -69,7 +69,13 @@
 	"LIKE": {
 		"prefix": ["LIKE", "like"],
 		"body": [
-			"LIKE "
+			"LIKE \"%\""
+		]
+	},
+	"ILIKE": {
+		"prefix": ["ILIKE", "ilike"],
+		"body": [
+			"LIKE \"%\""
 		]
 	},
 	"DISTINCT": {
@@ -145,10 +151,16 @@
 			"${1:tmp} AS ("
 		]
 	},
+	"IFF": {
+		"prefix": ["IFF", "if"],
+		"body": [
+			"IFF(${1:<cond>}, 1, 0) AS $0"
+		]
+	},
 	"CASE": {
 		"prefix": ["CASE", "ca"],
 		"body": [
-			"CASE WHEN ${1:<cond>} THEN 1 ELSE 0 END"
+			"CASE WHEN ${1:<cond>} THEN 1 ELSE 0 END AS $0"
 		]
 	},
 	"INNER JOIN": {
@@ -179,13 +191,13 @@
 	"first_date": {
 		"prefix": "first_date",
 		"body": [
-			"DATE_TRUNC('month', ${1:<DATE>})"
+			"DATE_TRUNC('month', ${1:<date>})"
 		]
 	},
 	"last_date": {
 		"prefix": "last_date",
 		"body": [
-			"LAST_DAY(${1:<DATE>})"
+			"LAST_DAY(${1:<date>})"
 		]
 	},
 	"today": {
@@ -209,7 +221,7 @@
 	"yearmonth": {
 		"prefix": "yearmonth",
 		"body": [
-			"TO_VARCHAR(${1:<DATE>}, 'YYYYMM')"
+			"TO_VARCHAR(${1:<date>}, 'YYYYMM')"
 		]
 	},
 	// template
@@ -217,29 +229,47 @@
 		"prefix": "LEFT JOIN(not null)",
 		"body": [
 			"LEFT JOIN",
-			"\t${2:<RIGHT>}",
+			"\t${2:<right>}",
 			"ON",
-			"\t${1:<LEFT>}.${3:<KEY>} = ${2:<RIGHT>}.${3:<KEY>}",
+			"\t${1:<left>}.${3:<key>} = ${2:<right>}.${3:<key>}",
 			"WHERE",
-			"\t${2:<RIGHT>}.${3:<KEY>} IS NOT NULL"
+			"\t${2:<right>}.${3:<key>} IS NOT NULL"
 		]
 	},
 	"pivot": {
 		"prefix": "pivot",
 		"body": [
 			"PIVOT (",
-			"\t${1:SUM(<VALUE>)}",
+			"\t${1:SUM(<value>)}",
 			"\tFOR",
-			"\t\t${2:<KEY>}",
+			"\t\t${2:<key>}",
 			"\tIN",
-			"\t\t(SELECT DISTINCT ${2:<KEY>} FROM ${3:<TABLE>})",
+			"\t\t(SELECT DISTINCT ${2:<key>} FROM ${3:<table>})",
 			")"
+		]
+	},
+	"clone table": {
+		"prefix": ["clone", "clone_table"],
+		"body": [
+			"CREATE OR REPLACE TABLE ${1:<dst>} CLONE ${2:<src>};"
+		]
+	},
+	"clone view": {
+		"prefix": ["clonev", "clone_view"],
+		"body": [
+			"CREATE OR REPLACE TABLE ${1:<dst>} AS SELECT * FROM ${2:<src>};"
+		]
+	},
+	"clone header": {
+		"prefix": ["cloneh", "clone_header"],
+		"body": [
+			"CREATE OR REPLACE TABLE ${1:<dst>} AS SELECT * FROM ${2:<src>} WHERE 1<>1;"
 		]
 	},
 	"insert": {
 		"prefix": "insert",
 		"body": [
-			"INSERT INTO ${1:<TABLE>}",
+			"INSERT INTO ${1:<table>}",
 			"\t(${2:<KEYS>})",
 			"VALUES",
 			"\t(${3:<VALUES>})",
@@ -249,10 +279,11 @@
 	"update": {
 		"prefix": "update",
 		"body": [
-			"UPDATE ${1:<TABLE>}",
+			"UPDATE ${1:<table>}",
 			"SET",
-			"\t${2:<KEY>} = ${3:<VALUE>}",
-			";"
+			"\t${2:<key>} = ${3:<value>}",
+			"WHERE",
+			"\t<CONDITION>;"
 		]
 	},
 	"random(uniform)": {
@@ -285,45 +316,45 @@
 	"add_column": {
 		"prefix": "add_column",
 		"body": [
-			"ALTER TABLE ${1:<TABLE>} ADD COLUMN ${2:<KEY>} ${3:<TYPE>};"
+			"ALTER TABLE ${1:<table>} ADD COLUMN ${2:<key>} ${3:<type>};"
 		]
 	},
 	"alter_column(not null)": {
 		"prefix": "alter_col(not null)",
 		"body": [
-			"ALTER TABLE ${1:<TABLE>} MODIFY COLUMN ${2:<KEY>} SET NOT NULL;"
+			"ALTER TABLE ${1:<table>} MODIFY COLUMN ${2:<key>} SET NOT NULL;"
 		]
 	},
 	"alter_column(unique)": {
 		"prefix": "alter_col(unique)",
 		"body": [
-			"ALTER TABLE ${1:<TABLE>} ADD CONSTRAINT ${1:<CONSTRAINT_NAME>} UNIQUE (${2:<KEY>});"
+			"ALTER TABLE ${1:<table>} ADD CONSTRAINT ${1:<constraint_name>} UNIQUE (${2:<key>});"
 		]
 	},
 	"alter_column(primary_key)": {
 		"prefix": "alter_col(primary_key)",
 		"body": [
-			"ALTER TABLE ${1:<TABLE>} ADD CONSTRAINT ${1:<CONSTRAINT_NAME>} PRIMARY KEY (${2:<KEY>});"
+			"ALTER TABLE ${1:<table>} ADD CONSTRAINT ${1:<constraint_name>} PRIMARY KEY (${2:<key>});"
 		]
 	},
 	"extract_by_group": {
 		"prefix": ["extract_by_group", "qualify"],
 		"body": [
 			"QUALIFY",
-			"\tROW_NUMBER() OVER (PARTITION BY ${1:<KEY>} ORDER BY ${2:<INDEX>} DESC) = 1"
+			"\tROW_NUMBER() OVER (PARTITION BY ${1:<key>} ORDER BY ${2:<index>} DESC) = 1"
 		]
 	},
 	"comment(table)": {
 		"prefix": "comment(table)",
 		"body": [
-			"COMMENT ON TABLE ${1:<TABLE>} IS ${2:<COMMENT>};"
+			"COMMENT ON TABLE ${1:<table>} IS ${2:<comment>};"
 		]
 	},
 	"comment(column)": {
 		"prefix": "comment(column)",
 		"body": [
-			"ALTER TABLE ${1:<TABLE>} ALTER (",
-			"\t${2:<KEY>} COMMENT ${3:<COMMENT>}",
+			"ALTER TABLE ${1:<table>} ALTER (",
+			"\t${2:<key>} COMMENT ${3:<comment>}",
 			");"
 		]
 	},
@@ -331,30 +362,30 @@
 	"create_external_stage": {
 		"prefix": "create_external_stage",
 		"body": [
-			"CREATE STAGE ${1:<STAGE_NAME>}",
-			"\tURL = '${2:<URL>}'",
-			"\tSTORAGE_INTEGRATION = ${3:<INTEGRATION_NAME>};"
+			"CREATE STAGE ${1:<stage_name>}",
+			"\tURL = '${2:<url>}'",
+			"\tSTORAGE_INTEGRATION = ${3:<integration_name>};"
 		]
 	},
 	"create_external_stage(s3)": {
 		"prefix": "create_external_stage(s3)",
 		"body": [
-			"CREATE STAGE ${1:<STAGE_NAME>}",
-			"\tURL = 'S3://${2:<BUCKET>}/${3:<PREFIX>}'",
-			"\tSTORAGE_INTEGRATION = ${4:<INTEGRATION_NAME>};"
+			"CREATE STAGE ${1:<stage_name>}",
+			"\tURL = 'S3://${2:<bucket>}/${3:<prefix>}'",
+			"\tSTORAGE_INTEGRATION = ${4:<integration_name>};"
 		]
 	},
 	"create_external_table": {
 		"prefix": "create_external_table",
 		"body": [
-			"CREATE OR REPLACE EXTERNAL TABLE ${1:<TABLE>} (",
+			"CREATE OR REPLACE EXTERNAL TABLE ${1:<table>} (",
 			"\tDATE_PART DATE AS (TO_DATE(METADATA\\$FILENAME)) NOT NULL",
 			"\t, FILENAME VARCHAR AS (METADATA\\$FILENAME) NOT NULL",
-			"\t, ${2:<KEY>} VARCHAR AS (VALUE:c1::VARCHAR) NULL",
-			"\t, CONSTRAINT PK_${3:<TABLE>} PRIMARY KEY (DATE_PART, ${4:<KEY>})",
+			"\t, ${2:<key>} VARCHAR AS (VALUE:c1::VARCHAR) NULL",
+			"\t, CONSTRAINT PK_${3:<table>} PRIMARY KEY (DATE_PART, ${4:<key>})",
 			")",
 			"PARTITION BY (DATE_PART)",
-			"LOCATION=@${5:<EXTERNAL_STAGE>}",
+			"LOCATION=@${5:<external_stage>}",
 			"AUTO_REFRESH=FALSE",
 			"FILE_FORMAT=(TYPE=CSV FIELD_DELIMITER=',' SKIP_HEADER=1 COMPRESSION=GZIP)",
 			"PATTERN = '.*.czv.gz'",
@@ -380,11 +411,11 @@
 			"SELECT",
 			"\t*",
 			"FROM",
-			"\t${1:<DB_NAME>}.INFORMATION_SCHEMA.COLUMNS",
+			"\t${1:<db_name>}.INFORMATION_SCHEMA.COLUMNS",
 			"WHERE",
-			"\tTABLE_CATALOG = '${1:<DB_NAME>}'",
-			"\tAND TABLE_SCHEMA = '${2:<SCHEMA_NAME>}'",
-			"\tAND TABLE_NAME = '${3:<TABLE_NAME>}';"
+			"\tTABLE_CATALOG = '${1:<db_name>}'",
+			"\tAND TABLE_SCHEMA = '${2:<schema_name>}'",
+			"\tAND TABLE_NAME = '${3:<table_name>}';"
 		]
 	},
 	"object_dependencies": {
@@ -402,9 +433,9 @@
 			"FROM",
 			"\tSNOWFLAKE.ACCOUNT_USAGE.OBJECT_DEPENDENCIES",
 			"WHERE",
-			"\tREFERENCING_DATABASE = '${1:<DB_NAME>}'",
-			"\tAND REFERENCING_SCHEMA = '${2:<SCHEMA_NAME>}'",
-			"\tAND REFERENCING_OBJECT_NAME = '${3:<TABLE_NAME>}';"
+			"\tREFERENCING_DATABASE = '${1:<db_name>}'",
+			"\tAND REFERENCING_SCHEMA = '${2:<schema_name>}'",
+			"\tAND REFERENCING_OBJECT_NAME = '${3:<table_name>}';"
 		]
 	},
 	"tables_are_equal": {
@@ -420,7 +451,7 @@
 			"\tUNION",
 			"\tSELECT 'TGT' AS ref_or_tgt, * FROM tgt_only",
 			")",
-			"SELECT * FROM diff ORDER BY ${1:<cols>} ref_or_tgt;"
+			"SELECT * FROM diff ORDER BY ${1:<cols>}, ref_or_tgt;"
 		]
 	},
 	"tables_are_equal(hashagg)": {
@@ -476,13 +507,13 @@
 	"show columns": {
 		"prefix": ["show_columns", "sc", "showc"],
 		"body": [
-			"SHOW COLUMNS IN ${1:<TABLE>};"
+			"SHOW COLUMNS IN ${1:<table>};"
 		]
 	},
 	"describe_table": {
 		"prefix": ["describe_table", "dt", "desct"],
 		"body": [
-			"DESCRIBE TABLE ${1:<TABLE>};"
+			"DESCRIBE TABLE ${1:<table>};"
 		]
 	},
 	"describe_view": {
@@ -506,18 +537,18 @@
 	"duplicated": {
 		"prefix": ["count_unique", "unique", "duplicated"],
 		"body": [
-			"SELECT ${2:<VALUE>}, COUNT(*) FROM ${1:<TABLE>} GROUP BY ALL ORDER BY COUNT(*) DESC;"
+			"SELECT ${2:<value>}, COUNT(*) FROM ${1:<table>} GROUP BY ALL ORDER BY COUNT(*) DESC;"
 		]
 	},
 	"get_ddl": {
 		"prefix": ["get_ddl", "ddl"],
 		"body": [
-			"SELECT GET_DDL('table', '${1:<TABLE>}');"
+			"SELECT GET_DDL('table', '${1:<table>}');"
 		]
 	},
 	// system
 	"query_history": {
-		"prefix": "query_history",
+		"prefix": ["query_history", "hist"],
 		"body": [
 			"SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY ORDER BY START_TIME;"
 		]

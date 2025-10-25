@@ -77,7 +77,7 @@
 			"{{ config(",
 			"\tmaterialized='${1|incremental,table,view|}',",
 			"\tincremental_strategy='${2|merge,delete+insert,append|}',",
-			"\tunique_key='${3:<KEY>}'",
+			"\tunique_key='${3:<key>}'",
 			") }}"
 		]
 	},
