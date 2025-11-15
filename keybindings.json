@@ -273,6 +273,10 @@
         "command": "git.commitStaged"
     },
     {
+        "key": "ctrl+shift+g r",
+        "command": "git.refresh"
+    },
+    {
         "key": "ctrl+shift+g n",
         "command": "git.checkout"
     },
