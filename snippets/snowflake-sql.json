@@ -9,7 +9,7 @@
 	"SELECT": {
 		"prefix": ["SELECT", "sel", "sl"],
 		"body": [
-			"SELECT * FROM $0;"
+			"SELECT * FROM "
 		]
 	},
 	"FROM": {
@@ -51,7 +51,7 @@
 	"LIMIT": {
 		"prefix": ["LIMIT", "lim", "lm"],
 		"body": [
-			"LIMIT 10;"
+			"LIMIT 100"
 		]
 	},
 	"IN": {
