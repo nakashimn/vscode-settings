@@ -312,39 +312,13 @@
     // github copilot
     ////////////////////////////////////////////////////////////////////////////
     {
-        "key": "ctrl+tab",
-        "command": "editor.action.inlineSuggest.trigger",
-        "when": "editorTextFocus && !editorHasSelection && !inlineSuggestionsVisible"
-    },
-    {
         "key": "ctrl+oem_102",
-        "command": "github.copilot.terminal.attachTerminalSelection"
+        "command": "claudeVSCodeSidebarSecondary.focus"
     },
     {
         "key": "ctrl+oem_102",
         "command": "workbench.action.closeAuxiliaryBar",
         "when": "auxiliaryBarVisible"
-    },
-    {
-        "key": "ctrl+shift+oem_102 e",
-        "command": "workbench.action.chat.newEditSession",
-        "when": "chatEditingParticipantRegistered && chatIsEnabled"
-    },
-    {
-        "key": "ctrl+shift+oem_102 n",
-        "command": "workbench.action.chat.newChat",
-        "when": "chatIsEnabled && chatLocation != 'editing-session'"
-    },
-    ////////////////////////////////////////////////////////////////////////////
-    // cline
-    ////////////////////////////////////////////////////////////////////////////
-    {
-        "key": "ctrl+shift+oem_102 oem_102",
-        "command": "claude-dev.SidebarProvider.focus"
-    },
-    {
-        "key": "ctrl+shift+oem_102 h",
-        "command": "cline.historyButtonClicked"
     },
     ////////////////////////////////////////////////////////////////////////////
     // remote ssh
