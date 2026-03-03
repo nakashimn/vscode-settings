@@ -6,13 +6,15 @@
     // dev containers
     "dev.containers.executeInWSL": true,
     "dev.containers.defaultExtensions": [
+        "anthropic.claude-code",
         "digoro.clipboard",
         "donjayamanne.githistory",
         "eamodio.gitlens",
         "gera2ld.markmap-vscode",
-        "github.copilot",
         "ionutvmi.path-autocomplete",
         "mhutchie.git-graph",
+        "ms-vscode.vscode-speech",
+        "ms-vscode.vscode-speech-language-pack-ja-jp",
         "ryuta46.multi-command",
         "shd101wyy.markdown-preview-enhanced"
     ],
