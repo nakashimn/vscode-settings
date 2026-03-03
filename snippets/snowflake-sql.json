@@ -448,8 +448,8 @@
 		"prefix": ["diff", "equal"],
 		"body": [
 			"WITH",
-			"ref AS (SELECT ${1:<cols>} FROM ${2:<ref>}),",
-			"tgt AS (SELECT ${1:<cols>} FROM ${3:<tgt>}),",
+			"ref AS (SELECT * EXCLUDE (${1:<cols>}) FROM ${2:<ref>}),",
+			"tgt AS (SELECT * EXCLUDE (${1:<cols>}) FROM ${3:<tgt>}),",
 			"ref_only AS (SELECT * FROM ref EXCEPT SELECT * FROM tgt),",
 			"tgt_only AS (SELECT * FROM tgt EXCEPT SELECT * FROM ref),",
 			"diff AS (",
@@ -457,7 +457,7 @@
 			"\tUNION",
 			"\tSELECT 'TGT' AS ref_or_tgt, * FROM tgt_only",
 			")",
-			"SELECT * FROM diff ORDER BY ${1:<cols>}, ref_or_tgt;"
+			"SELECT * FROM diff ORDER BY ref_or_tgt;"
 		]
 	},
 	"tables_are_equal(hashagg)": {
