@@ -239,11 +239,13 @@
     },
     {
         "key": "ctrl+shift+l",
-        "command": "workbench.action.splitEditorRight"
+        "command": "workbench.action.splitEditorRight",
+        "when": "editorTextFocus"
     },
     {
         "key": "ctrl+shift+k",
-        "command": "workbench.action.splitEditorDown"
+        "command": "workbench.action.splitEditorDown",
+        "when": "editorTextFocus"
     },
     {
         "key": "ctrl+j",
