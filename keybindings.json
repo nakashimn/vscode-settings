@@ -172,7 +172,7 @@
     {
         "key": "ctrl+e",
         "command": "workbench.action.focusActiveEditorGroup",
-        "when": "sideBarFocus"
+        "when": "sideBarFocus || view.claudeVSCodeSidebarSecondary.visible"
     },
     {
         "key": "ctrl+shift+e",
@@ -318,6 +318,10 @@
         "command": "git.commitStaged"
     },
     {
+        "key": "ctrl+shift+g d",
+        "command": "git.openChange"
+    },
+    {
         "key": "ctrl+shift+g r",
         "command": "git.refresh"
     },
@@ -354,7 +358,7 @@
         "command": "git.pushTags"
     },
     ////////////////////////////////////////////////////////////////////////////
-    // github copilot
+    // Claude Code
     ////////////////////////////////////////////////////////////////////////////
     {
         "key": "ctrl+oem_102",
@@ -364,6 +368,10 @@
         "key": "ctrl+oem_102",
         "command": "workbench.action.closeAuxiliaryBar",
         "when": "auxiliaryBarVisible"
+    },
+    {
+        "key": "ctrl+shift+oem_102",
+        "command": "claude-vscode.newConversation"
     },
     ////////////////////////////////////////////////////////////////////////////
     // remote ssh
@@ -1097,5 +1105,35 @@
     {
         "key": "ctrl+pagedown",
         "command": "-workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "-claude-vscode.newConversation",
+        "when": "config.claudeCode.enableNewConversationShortcut && activeWebviewPanelId == 'claudeVSCodePanel' || claude-vscode.sideBarActive && config.claudeCode.enableNewConversationShortcut && !editorFocus && !panelFocus"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-inlineChat.start",
+        "when": "editorFocus && inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput || editorFocus && inlineChatHasNotebookAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookInline && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook'"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-workbench.action.terminal.chat.start",
+        "when": "chatIsEnabled && terminalChatAgentRegistered && terminalFocusInAny && terminalHasBeenCreated || chatIsEnabled && terminalChatAgentRegistered && terminalFocusInAny && terminalProcessSupported"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-settings.action.toggleAiSearch",
+        "when": "aiSettingResultsAvailable && inSettingsEditor"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-search.action.searchWithAI",
+        "when": "hasAIResultProviderKey && searchViewletFocus"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "-editor.action.triggerSuggest",
+        "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
     }
 ]
