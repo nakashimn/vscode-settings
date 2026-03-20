@@ -119,6 +119,10 @@
     // focused window
     ////////////////////////////////////////////////////////////////////////////
     {
+        "key": "ctrl+r",
+        "command": "workbench.files.action.refreshFilesExplorer"
+    },
+    {
         "key": "ctrl+shift+o",
         "command": "workbench.action.files.openFolder"
     },
@@ -1135,5 +1139,9 @@
         "key": "ctrl+i",
         "command": "-editor.action.triggerSuggest",
         "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
+    },
+    {
+        "key": "ctrl+r",
+        "command": "-workbench.action.openRecent"
     }
 ]
