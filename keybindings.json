@@ -359,6 +359,10 @@
         "command": "workbench.action.focusActiveEditorGroup",
         "when": "view.snowflakeSearchableObjectExplorer.visible && !editorTextFocus"
     },
+    {
+        "key": "ctrl+q",
+        "command": "snowflakeQueryResults.focus"
+    },
     ////////////////////////////////////////////////////////////////////////////
     // git
     ////////////////////////////////////////////////////////////////////////////
