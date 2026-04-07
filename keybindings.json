@@ -181,7 +181,7 @@
     },
     {
         "key": "ctrl+shift+oem_comma",
-    "command": "editor.action.fontZoomIn"
+        "command": "editor.action.fontZoomIn"
     },
     {
         "key": "ctrl+shift+oem_period",
@@ -264,12 +264,12 @@
     {
         "key": "ctrl+left",
         "command": "workbench.action.increaseViewWidth",
-        "when": "!editorFocus"
+        "when": "explorerViewletFocus && !inputFocus"
     },
     {
         "key": "ctrl+right",
         "command": "workbench.action.decreaseViewWidth",
-        "when": "!editorFocus"
+        "when": "explorerViewletFocus && !inputFocus"
     },
     ////////////////////////////////////////////////////////////////////////////
     // terminal window
@@ -429,7 +429,7 @@
     ////////////////////////////////////////////////////////////////////////////
     {
         "key": "ctrl+oem_102",
-        "command": "claudeVSCodeSidebarSec ary.focus"
+        "command": "claudeVSCodeSidebarSecondary.focus"
     },
     {
         "key": "ctrl+oem_102",
