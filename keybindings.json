@@ -51,6 +51,12 @@
         "command": "cursorTop",
         "when": "textInputFocus"
     },
+    {
+        "key": "ctrl+shift+oem_plus",
+        "command": "cursorBottom",
+        "when": "textInputFocus"
+    },
+
     ////////////////////////////////////////////////////////////////////////////
     // editor
     ////////////////////////////////////////////////////////////////////////////
@@ -115,6 +121,7 @@
         "key": "ctrl+shift+backspace",
         "command": "editor.action.deleteLines"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // editor window
     ////////////////////////////////////////////////////////////////////////////
@@ -164,10 +171,6 @@
         "key": "ctrl+shift+m o",
         "command": "plantuml.exportCurrent",
         "when": "editorLangId == 'plantuml'"
-    },
-    {
-        "key": "ctrl+shift+oem_plus",
-        "command": "workbench.action.toggleZenMode"
     },
     {
         "key": "ctrl+e",
@@ -238,6 +241,7 @@
         "key": "ctrl+9",
         "command": "workbench.action.openEditorAtIndex9"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // explorer window
     ////////////////////////////////////////////////////////////////////////////
@@ -271,6 +275,7 @@
         "command": "workbench.action.decreaseViewWidth",
         "when": "explorerViewletFocus && !inputFocus"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // terminal window
     ////////////////////////////////////////////////////////////////////////////
@@ -308,16 +313,6 @@
         "when": "terminalFocus && terminalHasBeenCreated && terminalSplitPaneActive || terminalFocus && terminalProcessSupported && terminalSplitPaneActive"
     },
     {
-        "key": "ctrl+pagedown",
-        "command": "workbench.action.terminal.focusPreviousPane",
-        "when": "terminalFocus && terminalHasBeenCreated && terminalSplitPaneActive || terminalFocus && terminalProcessSupported && terminalSplitPaneActive"
-    },
-    {
-        "key": "ctrl+pageup",
-        "command": "workbench.action.terminal.focusNextPane",
-        "when": "terminalFocus && terminalHasBeenCreated && terminalSplitPaneActive || terminalFocus && terminalProcessSupported && terminalSplitPaneActive"
-    },
-    {
         "key": "ctrl+n",
         "command": "workbench.action.terminal.new",
         "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
@@ -341,6 +336,7 @@
         "command": "workbench.action.terminal.resizePaneDown",
         "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // Snowflake window
     ////////////////////////////////////////////////////////////////////////////
@@ -364,6 +360,7 @@
         "command": "snowflakeQueryResults.focus",
         "when": "snowflakeQueryResults.active"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // git
     ////////////////////////////////////////////////////////////////////////////
@@ -424,6 +421,7 @@
         "key": "ctrl+shift+g ctrl+shift+p",
         "command": "git.pushTags"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // Claude Code
     ////////////////////////////////////////////////////////////////////////////
@@ -440,6 +438,7 @@
         "key": "ctrl+shift+oem_102",
         "command": "claude-vscode.newConversation"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // remote ssh
     ////////////////////////////////////////////////////////////////////////////
@@ -469,6 +468,7 @@
         "command": "remote-containers.reopenInSSH",
         "when": "hasRemoteServer"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // debug
     ////////////////////////////////////////////////////////////////////////////
@@ -508,23 +508,13 @@
         "command": "quokka.makeQuokkaFromExistingFile",
         "when": "editorLangId == 'typescript'"
     },
-    // php
-    {
-        "key": "ctrl+h ctrl+h",
-        "command": "extension.php-debug.debugEditorContents",
-        "when": "!inDebugMode && editorLangId == 'php'"
-    },
-    {
-        "key": "ctrl+h ctrl+h",
-        "command": "workbench.action.debug.stepInto",
-        "when": "inDebugMode && editorLangId == 'php'"
-    },
     // snowflake
     {
         "key": "ctrl+h ctrl+h",
         "command": "snowflake.executeStatements",
         "when": "editorTextFocus && !notebookCellListFocused && editorLangId == 'snowflake-sql'"
     },
+
     ////////////////////////////////////////////////////////////////////////////
     // disable default keybindings
     ////////////////////////////////////////////////////////////////////////////
