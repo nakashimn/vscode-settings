@@ -74,6 +74,11 @@
         "command": "editor.action.removeCommentLine"
     },
     {
+        "key": "ctrl+shift+k",
+        "command": "editor.toggleFold",
+        "when": "editorLangId == 'markdown' || editorLangId == 'json' || editorLangId == 'yaml'"
+    },
+    {
         "key": "ctrl+shift+a",
         "command": "explorer.newFolder"
     },
@@ -485,7 +490,7 @@
             "sequence": [
                 "jupyter.execSelectionInteractive",
                 "cursorDown"
-            ],
+            ]
         },
         "when": "editorTextFocus && isWorkspaceTrusted && jupyter.ownsSelection && jupyter.interactive.canRestartNotebookKernel && editorLangId == 'python'"
     },
