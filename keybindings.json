@@ -346,14 +346,14 @@
     // Snowflake window
     ////////////////////////////////////////////////////////////////////////////
     {
-        "key": "ctrl+shift+q",
-        "command": "snowflakeSearchableObjectExplorer.focus",
-        "when": "snowflakeObjectDetails.active"
+        "key": "ctrl+shift+q ctrl+shift+q",
+        "command": "snowflakeAccount.focus",
+        "when": "!snowflakeObjectDetails.active"
     },
     {
         "key": "ctrl+shift+q",
-        "command": "snowflakeAccount.focus",
-        "when": "!snowflakeObjectDetails.active"
+        "command": "snowflakeSearchableObjectExplorer.focus",
+        "when": "snowflakeObjectDetails.active"
     },
     {
         "key": "ctrl+shift+q",
@@ -364,6 +364,25 @@
         "key": "ctrl+q",
         "command": "snowflakeQueryResults.focus",
         "when": "snowflakeQueryResults.active"
+    },
+
+    ////////////////////////////////////////////////////////////////////////////
+    // SQLTools
+    ////////////////////////////////////////////////////////////////////////////
+    {
+        "key": "ctrl+shift+q ctrl+shift+s",
+        "command": "sqltoolsViewConnectionExplorer.focus",
+        "when": "!sqltoolsViewConnectionExplorer.active"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "sqltoolsViewConnectionExplorer.focus",
+        "when": "sqltoolsViewConnectionExplorer.active"
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "sqltoolsViewConnectionExplorer.active && !editorTextFocus"
     },
 
     ////////////////////////////////////////////////////////////////////////////
