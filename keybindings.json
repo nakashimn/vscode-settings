@@ -526,7 +526,7 @@
     {
         "key": "ctrl+h ctrl+h",
         "command": "sqltools.executeCurrentQuery",
-        "when": "editorTextFocus && editorLangId == 'SQL'"
+        "when": "editorTextFocus && editorLangId == 'sql'"
     },
 
     ////////////////////////////////////////////////////////////////////////////
