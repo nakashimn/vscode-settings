@@ -522,6 +522,12 @@
         "command": "snowflake.executeStatements",
         "when": "editorTextFocus && !notebookCellListFocused && editorLangId == 'snowflake-sql'"
     },
+    // sqltools
+    {
+        "key": "ctrl+h ctrl+h",
+        "command": "sqltools.executeCurrentQuery",
+        "when": "editorTextFocus && editorLangId == 'SQL'"
+    },
 
     ////////////////////////////////////////////////////////////////////////////
     // disable default keybindings
